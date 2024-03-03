@@ -33,6 +33,10 @@
     "url": "https://github.com/ella-yschoi/datepicker-calendar/issues"
   },
   "homepage": "https://github.com/ella-yschoi/datepicker-calendar#readme",
+  "peerDependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
   "dependencies": {
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.0",
