@@ -1,9 +1,12 @@
-import './App.css';
+import GlobalStyles from './styles/GlobalStyles';
 import Calendar from './Calendar';
 
 function App() {
   return (
-    <Calendar/>
+    <>
+      <GlobalStyles />
+      <Calendar />
+    </>
   )
 }
 
