@@ -3,10 +3,33 @@ import { useState } from 'react';
 import { DAYS_OF_WEEK_KO } from './constants/daysOfWeek';
 
 const Calendar = () => {
+  const [currentDate, setCurrentDate] = useState(new Date());
   const [dateInput, setDateInput] = useState('');
+
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setDateInput(event.target.value);
   };
+
+  const handlePreviousMonth = () => {
+    setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1));
+  };
+
+  const handleNextMonth = () => {
+    setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1));
+  };
+
+  const daysInMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate();
+  const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1).getDay();
+
+  const dates = [];
+  for (let i = 0; i < firstDayOfMonth; i++) {
+    dates.push(<DateComponent key={`empty-${i}`} />);
+  }
+  for (let i = 1; i <= daysInMonth; i++) {
+    dates.push(<DateComponent key={i}>{i}</DateComponent>);
+  }
+
+  const yearMonth = `${currentDate.getFullYear()}년 ${currentDate.getMonth() + 1}월`;
 
   return (
     <CalendarContainer>
@@ -19,10 +42,10 @@ const Calendar = () => {
       />
       <CalendarHeader>
         <YearMonth>
-          2023년 1월
+          {yearMonth}
         </YearMonth>
-        <LeftButton />
-        <RightButton />
+        <LeftButton onClick={handlePreviousMonth}/>
+        <RightButton onClick={handleNextMonth}/>
       </CalendarHeader>
       <DayContainer>
         {DAYS_OF_WEEK_KO.map(day => (
@@ -30,9 +53,7 @@ const Calendar = () => {
         ))}
       </DayContainer>
       <DateContainer>
-        {Array.from({ length: 42 }, (_, i) => (
-          <Date key={i + 1}>{i + 1}</Date>
-        ))}
+        {dates}
       </DateContainer>
     </CalendarContainer>
   );
@@ -95,6 +116,7 @@ const ButtonBase = styled.button`
 
   &:hover {
     background-color: #313131;
+    border-radius: 20%;
   }
 
   &::before,
@@ -171,7 +193,7 @@ const DateContainer = styled.div`
   gap: 10px;
 `;
 
-const Date = styled.div`
+const DateComponent = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
