@@ -2,33 +2,90 @@ import styled from 'styled-components';
 import { useState } from 'react';
 import { DAYS_OF_WEEK_KO } from './constants/daysOfWeek';
 
-const Calendar = () => {
-  const [currentDate, setCurrentDate] = useState(new Date());
-  const [dateInput, setDateInput] = useState('');
+const renderCalendar = (currentDate: Date) => {
+  const showYear = currentDate.getFullYear();
+  const showMonth = currentDate.getMonth();
 
+  const prevMonthLast = new Date(showYear, showMonth, 0);
+  const currentMonthLast = new Date(showYear, showMonth + 1, 0);
+
+  const prevMonthLastDate = prevMonthLast.getDate();
+  const prevMonthLastDay = prevMonthLast.getDay();
+
+  const currentMonthLastDate = currentMonthLast.getDate();
+  const currentMonthLastDay = currentMonthLast.getDay();
+
+  // 이전 달의 날짜들을 계산
+  const prevDates = [];
+  if (prevMonthLastDay !== 6) {
+    for (let i = 0; i < prevMonthLastDay + 1; i++) {
+      prevDates.unshift(prevMonthLastDate - i);
+    }
+  }
+
+  // 현재 달의 날짜들을 계산
+  const thisDates = Array.from (
+    { length: currentMonthLastDate },
+    (_, i) => i + 1
+  );
+
+  // 다음 달 날짜들을 계산
+  const nextDates = [];
+  // 다음 달의 첫 번째 날짜가 시작할 요일을 구하기
+  const firstDayNextMonth = (currentMonthLastDay + 1) % 7;
+  // 최소한 한 주를 채우고, 필요한 경우 두 번째 주까지 날짜를 추가
+  for (let i = 1; i <= 14 - firstDayNextMonth; i++) {
+    nextDates.push(i);
+  }
+
+  // 만약 다음 달 날짜가 7개 미만이라면, 다음 주까지 날짜를 14개 추가
+  if (nextDates.length < 7) {
+    for (let i = 7 - firstDayNextMonth; i < 14 - firstDayNextMonth; i++) {
+      nextDates.push(i);
+    }
+  }
+
+  // 이전 달, 현재 달, 다음 달 날짜를 합쳐 총 날짜 수를 계산
+  const totalDays = prevDates.length + thisDates.length + nextDates.length;
+
+  // 총 날짜가 42를 넘지 않도록 다음 달 날짜 배열을 조정
+  if (totalDays > 42) {
+    const excessDays = totalDays - 42;
+    nextDates.splice(nextDates.length - excessDays, excessDays); // 초과하는 날짜들을 제거
+  }
+
+  return {
+    prevMonthDays: prevDates,
+    currentMonthDays: thisDates,
+    nextMonthDays: nextDates,
+  };
+};
+
+const Calendar = () => {
+  const [currentDate, setCurrentDate] = useState(new Date()); // currentDate이 초기값
+
+  // 날짜 입력 시, 해당 날짜 선택
+  const [dateInput, setDateInput] = useState('');
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setDateInput(event.target.value);
   };
 
+  // 이전 달과 다음 달 버튼의 이벤트 핸들러를 업데이트
   const handlePreviousMonth = () => {
-    setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1));
+    setCurrentDate(
+      new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1)
+    );
   };
-
   const handleNextMonth = () => {
-    setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1));
+    setCurrentDate(
+      new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1)
+    );
   };
 
-  const daysInMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate();
-  const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1).getDay();
+  // 달력의 날짜들을 가져오기
+  const { prevMonthDays, currentMonthDays, nextMonthDays } = renderCalendar(currentDate);
 
-  const dates = [];
-  for (let i = 0; i < firstDayOfMonth; i++) {
-    dates.push(<DateComponent key={`empty-${i}`} />);
-  }
-  for (let i = 1; i <= daysInMonth; i++) {
-    dates.push(<DateComponent key={i}>{i}</DateComponent>);
-  }
-
+  // YYYY년 MM월 포맷으로 보여주기
   const yearMonth = `${currentDate.getFullYear()}년 ${currentDate.getMonth() + 1}월`;
 
   return (
@@ -41,23 +98,29 @@ const Calendar = () => {
         placeholder='YYYY/MM/DD'
       />
       <CalendarHeader>
-        <YearMonth>
-          {yearMonth}
-        </YearMonth>
-        <LeftButton onClick={handlePreviousMonth}/>
-        <RightButton onClick={handleNextMonth}/>
+        <YearMonth>{yearMonth}</YearMonth>
+        <LeftButton onClick={handlePreviousMonth} />
+        <RightButton onClick={handleNextMonth} />
       </CalendarHeader>
       <DayContainer>
-        {DAYS_OF_WEEK_KO.map(day => (
-          <Day key={day}>{day}</Day>
+        {DAYS_OF_WEEK_KO.map((day) => (
+          <DayComponent key={day}>{day}</DayComponent>
         ))}
       </DayContainer>
       <DateContainer>
-        {dates}
+        {prevMonthDays.map((date) => (
+          <ExtraDateComponent key={`prev-${date}`}>{date}</ExtraDateComponent>
+        ))}
+        {currentMonthDays.map((date) => (
+          <DateComponent key={`current-${date}`}>{date}</DateComponent>
+        ))}
+        {nextMonthDays.map((date) => (
+          <ExtraDateComponent key={`next-${date}`}>{date}</ExtraDateComponent>
+        ))}
       </DateContainer>
     </CalendarContainer>
   );
-}
+};
 
 export default Calendar;
 
@@ -134,16 +197,16 @@ const LeftButton = styled(ButtonBase)`
   &::before {
     top: 19%;
     left: 20%;
-    width: .7rem;
-    height: .125rem;
+    width: 0.7rem;
+    height: 0.125rem;
     transform: translate(10%, 230%) rotate(-45deg);
   }
 
   &::after {
     top: 60%;
     left: 30%;
-    width: .7rem;
-    height: .125rem;
+    width: 0.7rem;
+    height: 0.125rem;
     transform: translate(-19%, -50%) rotate(45deg);
   }
 `;
@@ -154,16 +217,16 @@ const RightButton = styled(ButtonBase)`
   &::before {
     top: 20%;
     left: 20%;
-    width: .7rem;
-    height: .125rem;
+    width: 0.7rem;
+    height: 0.125rem;
     transform: translate(10%, 230%) rotate(45deg);
   }
 
   &::after {
     top: 60%;
     left: 30%;
-    width: .7rem;
-    height: .125rem;
+    width: 0.7rem;
+    height: 0.125rem;
     transform: translate(-19%, -50%) rotate(-45deg);
   }
 `;
@@ -175,7 +238,7 @@ const DayContainer = styled.div`
   margin-bottom: 10px;
 `;
 
-const Day = styled.div`
+const DayComponent = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -211,3 +274,6 @@ const DateComponent = styled.div`
   }
 `;
 
+const ExtraDateComponent = styled(DateComponent)`
+  color: #899797;
+`;
