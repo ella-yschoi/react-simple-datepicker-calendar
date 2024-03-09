@@ -71,6 +71,15 @@ const Calendar = () => {
   const [$isInputValid, setIsInputValid] = useState(true);
   const [currentDate, setCurrentDate] = useState(new Date()); // currentDate이 초기값
 
+  const isToday = (date: number) => {
+    const today = new Date();
+    return (
+      date === today.getDate() &&
+      currentDate.getMonth() === today.getMonth() &&
+      currentDate.getFullYear() === today.getFullYear()
+    );
+  };
+
   // 이전 달과 다음 달 버튼의 이벤트 핸들러를 업데이트
   const handlePreviousMonth = () => {
     setCurrentDate(
@@ -133,7 +142,7 @@ const Calendar = () => {
   return (
     <>
       <DateInputContainer>
-        Date : {displayDate}
+        날짜 : {displayDate}
       </DateInputContainer>
       <CalendarContainer>
         <StyledCalendarInput
@@ -160,7 +169,12 @@ const Calendar = () => {
             <ExtraDateComponent key={`prev-${date}`}>{date}</ExtraDateComponent>
           ))}
           {currentMonthDays.map((date) => (
-            <DateComponent key={`current-${date}`}>{date}</DateComponent>
+          <DateComponent
+            key={`current-${date}`}
+            className={isToday(date) ? 'today' : ''}
+          >
+            {date}
+          </DateComponent>
           ))}
           {nextMonthDays.map((date) => (
             <ExtraDateComponent key={`next-${date}`}>{date}</ExtraDateComponent>
@@ -330,6 +344,12 @@ const DateComponent = styled.div`
 
   &:hover {
     cursor: pointer;
+    background-color: #273241;
+    border-radius: 20%;
+  }
+
+  &.today {
+    color: #eff5fd;
     background-color: #2383e2;
     border-radius: 20%;
   }
