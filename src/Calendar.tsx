@@ -2,6 +2,10 @@ import styled from 'styled-components';
 import { useState } from 'react';
 import { DAYS_OF_WEEK_KO } from './constants/daysOfWeek';
 
+type StyledCalendarInputProps = React.InputHTMLAttributes<HTMLInputElement> & {
+  $isInputValid: boolean;
+};
+
 const renderCalendar = (currentDate: Date) => {
   const showYear = currentDate.getFullYear();
   const showMonth = currentDate.getMonth();
@@ -62,13 +66,10 @@ const renderCalendar = (currentDate: Date) => {
 };
 
 const Calendar = () => {
+  const [dateInput, setDateInput] = useState(''); // 사용자의 입력 추적
+  const [displayDate, setDisplayDate] = useState(''); // 화면에 표시할 날짜
+  const [$isInputValid, setIsInputValid] = useState(true);
   const [currentDate, setCurrentDate] = useState(new Date()); // currentDate이 초기값
-
-  // 날짜 입력 시, 해당 날짜 선택
-  const [dateInput, setDateInput] = useState('');
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setDateInput(event.target.value);
-  };
 
   // 이전 달과 다음 달 버튼의 이벤트 핸들러를 업데이트
   const handlePreviousMonth = () => {
@@ -85,44 +86,104 @@ const Calendar = () => {
   // 달력의 날짜들을 가져오기
   const { prevMonthDays, currentMonthDays, nextMonthDays } = renderCalendar(currentDate);
 
-  // YYYY년 MM월 포맷으로 보여주기
+  // YYYY년 MM월 형태
   const yearMonth = `${currentDate.getFullYear()}년 ${currentDate.getMonth() + 1}월`;
 
+  const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setDateInput(event.target.value); // 입력 필드의 값을 dateInput 상태에 저장
+  }
+
+  const handleKeyDown= (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      const dateRegex = /^\d{4}\/\d{1,2}\/\d{1,2}$/;
+      const isValidFormat = dateRegex.test(dateInput)
+
+      if (isValidFormat) {
+        // 입력된 날짜에서 년, 월, 일을 추출
+        const [yearStr, monthStr, dayStr] = dateInput.split('/');
+        // 년, 월, 일을 숫자로 변환
+        const year = parseInt(yearStr, 10);
+        const month = parseInt(monthStr, 10);
+        const day = parseInt(dayStr, 10);
+  
+        // 날짜 객체를 생성하여 유효성 검사
+        const dateObj = new Date(year, month - 1, day);
+        const isValidDate =
+          dateObj.getFullYear() === year &&
+          dateObj.getMonth() === month - 1 &&
+          dateObj.getDate() === day;
+        
+        if (isValidDate) {
+          // 포맷팅된 날짜로 상태 업데이트
+          const formattedDate = `${yearStr.padStart(4, '0')}/${monthStr.padStart(2, '0')}/${dayStr.padStart(2, '0')}`;
+          setDisplayDate(formattedDate); // DateInputContainer에 표시될 날짜를 업데이트
+          setDateInput(formattedDate);
+          setIsInputValid(true);
+        } else {
+          alert('유효하지 않은 날짜입니다. 올바른 날짜를 입력해 주세요.');
+          setIsInputValid(false);
+        }
+      } else {
+        alert('유효하지 않은 형식입니다. YYYY/MM/DD 형식으로 입력해 주세요.');
+        setIsInputValid(false);
+      }
+    }
+  };  
+
   return (
-    <CalendarContainer>
-      <CalendarInput
-        type='text'
-        id='date'
-        value={dateInput}
-        onChange={handleInputChange}
-        placeholder='YYYY/MM/DD'
-      />
-      <CalendarHeader>
-        <YearMonth>{yearMonth}</YearMonth>
-        <LeftButton onClick={handlePreviousMonth} />
-        <RightButton onClick={handleNextMonth} />
-      </CalendarHeader>
-      <DayContainer>
-        {DAYS_OF_WEEK_KO.map((day) => (
-          <DayComponent key={day}>{day}</DayComponent>
-        ))}
-      </DayContainer>
-      <DateContainer>
-        {prevMonthDays.map((date) => (
-          <ExtraDateComponent key={`prev-${date}`}>{date}</ExtraDateComponent>
-        ))}
-        {currentMonthDays.map((date) => (
-          <DateComponent key={`current-${date}`}>{date}</DateComponent>
-        ))}
-        {nextMonthDays.map((date) => (
-          <ExtraDateComponent key={`next-${date}`}>{date}</ExtraDateComponent>
-        ))}
-      </DateContainer>
-    </CalendarContainer>
+    <>
+      <DateInputContainer>
+        Date : {displayDate}
+      </DateInputContainer>
+      <CalendarContainer>
+        <StyledCalendarInput
+          type='text'
+          id='date'
+          value={dateInput}
+          onChange={handleDateChange}
+          onKeyDown={handleKeyDown}
+          placeholder='YYYY/MM/DD'
+          $isInputValid={$isInputValid} // 유효성 상태를 props로 전달
+        />
+        <CalendarHeader>
+          <YearMonth>{yearMonth}</YearMonth>
+          <LeftButton onClick={handlePreviousMonth} />
+          <RightButton onClick={handleNextMonth} />
+        </CalendarHeader>
+        <DayContainer>
+          {DAYS_OF_WEEK_KO.map((day) => (
+            <DayComponent key={day}>{day}</DayComponent>
+          ))}
+        </DayContainer>
+        <DateContainer>
+          {prevMonthDays.map((date) => (
+            <ExtraDateComponent key={`prev-${date}`}>{date}</ExtraDateComponent>
+          ))}
+          {currentMonthDays.map((date) => (
+            <DateComponent key={`current-${date}`}>{date}</DateComponent>
+          ))}
+          {nextMonthDays.map((date) => (
+            <ExtraDateComponent key={`next-${date}`}>{date}</ExtraDateComponent>
+          ))}
+        </DateContainer>
+      </CalendarContainer>
+    </>
   );
 };
 
 export default Calendar;
+
+const DateInputContainer = styled.div`
+  margin: 5px;
+  padding: 25px 25px 25px 28px;
+  width: 247px;
+  height: 10px;
+  background-color: #252525;
+  border-radius: 10px;
+  font-size: 15px;
+  color: #c5c5c5;
+  font-family: 'Noto Sans KR';
+`;
 
 const CalendarContainer = styled.div`
   background-color: #252525;
@@ -135,24 +196,24 @@ const CalendarContainer = styled.div`
   font-family: 'Noto Sans KR';
 `;
 
-const CalendarInput = styled.input`
-  width: 238px;
+const StyledCalendarInput = styled.input<StyledCalendarInputProps>`
+  width: 228px;
   height: 10px;
-  padding: 10px 0;
-  padding-left: 10px;
-  border: 1px solid #404040;
+  padding: 10px;
+  border: 1px solid ${props => (props.$isInputValid ? '#404040' : '#eb5756')};
   border-radius: 8px;
   background: none;
   text-align: left;
   color: #cccccc;
   font-size: 15px;
-
+  
   &::placeholder {
     color: #757575;
   }
 
   &:focus {
     outline: none;
+    border-color: ${props => (props.$isInputValid ? '#2383e2' : '#eb5756')};
   }
 `;
 
