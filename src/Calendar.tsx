@@ -113,14 +113,31 @@ const Calendar = () => {
   }
 
   const handleDateSelect = (year: number, month: number, day: number) => {
-    // 선택된 날짜의 문자열 포맷을 생성
-    const newDate = new Date(year, month - 1, day);
-    setCurrentDate(newDate); // 현재 날짜 상태를 업데이트
-
+    let updatedYear = year;
+    let updatedMonth = month - 1; // JavaScript의 Date 객체는 0부터 11까지 월을 나타냄
+  
+    // 이전 달 날짜 클릭 시 년/월 조정
+    if (month === 0) {
+      updatedYear = year - 1;
+      updatedMonth = 11; // 12월
+    }
+  
+    // 다음 달 날짜 클릭 시 년/월 조정
+    if (month === 13) {
+      updatedYear = year + 1;
+      updatedMonth = 0; // 1월
+    }
+  
+    const updatedDate = new Date(updatedYear, updatedMonth, day);
+    setCurrentDate(updatedDate);
+  
     // 포맷팅된 날짜로 상태 업데이트
-    const formattedDate = `${year}/${month < 10 ? `0${month}` : month}/${day < 10 ? `0${day}` : day}`;
-    setDisplayDate(formattedDate); // DateInputContainer에 표시될 날짜를 업데이트
-    setDateInput(formattedDate);   // CalendarInput에도 날짜를 업데이트
+    const formattedMonth = updatedMonth + 1 < 10 ? `0${updatedMonth + 1}` : `${updatedMonth + 1}`;
+    const formattedDay = day < 10 ? `0${day}` : `${day}`;
+    const formattedDate = `${updatedYear}/${formattedMonth}/${formattedDay}`;
+    
+    setDisplayDate(formattedDate);
+    setDateInput(formattedDate);
   };
   
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
