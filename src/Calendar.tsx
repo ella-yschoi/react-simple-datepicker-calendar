@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { useState } from 'react';
 import { DAYS_OF_WEEK_KO } from './constants/daysOfWeek';
 
-type StyledCalendarInputProps = React.InputHTMLAttributes<HTMLInputElement> & {
+type CalendarInputProps = React.InputHTMLAttributes<HTMLInputElement> & {
   $isInputValid: boolean;
 };
 
@@ -28,7 +28,7 @@ const renderCalendar = (currentDate: Date) => {
   }
 
   // 현재 달의 날짜들을 계산
-  const thisDates = Array.from (
+  const currentDates = Array.from (
     { length: currentMonthLastDate },
     (_, i) => i + 1
   );
@@ -50,7 +50,7 @@ const renderCalendar = (currentDate: Date) => {
   }
 
   // 이전 달, 현재 달, 다음 달 날짜를 합쳐 총 날짜 수를 계산
-  const totalDays = prevDates.length + thisDates.length + nextDates.length;
+  const totalDays = prevDates.length + currentDates.length + nextDates.length;
 
   // 총 날짜가 42를 넘지 않도록 다음 달 날짜 배열을 조정
   if (totalDays > 42) {
@@ -60,7 +60,7 @@ const renderCalendar = (currentDate: Date) => {
 
   return {
     prevMonthDays: prevDates,
-    currentMonthDays: thisDates,
+    currentMonthDays: currentDates,
     nextMonthDays: nextDates,
   };
 };
@@ -71,12 +71,22 @@ const Calendar = () => {
   const [$isInputValid, setIsInputValid] = useState(true);
   const [currentDate, setCurrentDate] = useState(new Date()); // currentDate이 초기값
 
+  // 오늘 날짜를 확인하는 함수
   const isToday = (date: number) => {
     const today = new Date();
     return (
       date === today.getDate() &&
       currentDate.getMonth() === today.getMonth() &&
       currentDate.getFullYear() === today.getFullYear()
+    );
+  };
+
+  const isSelected = (date: number) => {
+    const selectedDate = new Date(displayDate);
+    return (
+      date === selectedDate.getDate() &&
+      currentDate.getMonth() === selectedDate.getMonth() &&
+      currentDate.getFullYear() === selectedDate.getFullYear()
     );
   };
 
@@ -102,7 +112,18 @@ const Calendar = () => {
     setDateInput(event.target.value); // 입력 필드의 값을 dateInput 상태에 저장
   }
 
-  const handleKeyDown= (event: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleDateSelect = (year: number, month: number, day: number) => {
+    // 선택된 날짜의 문자열 포맷을 생성
+    const newDate = new Date(year, month - 1, day);
+    setCurrentDate(newDate); // 현재 날짜 상태를 업데이트
+
+    // 포맷팅된 날짜로 상태 업데이트
+    const formattedDate = `${year}/${month < 10 ? `0${month}` : month}/${day < 10 ? `0${day}` : day}`;
+    setDisplayDate(formattedDate); // DateInputContainer에 표시될 날짜를 업데이트
+    setDateInput(formattedDate);   // CalendarInput에도 날짜를 업데이트
+  };
+  
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
       const dateRegex = /^\d{4}\/\d{1,2}\/\d{1,2}$/;
       const isValidFormat = dateRegex.test(dateInput)
@@ -145,7 +166,7 @@ const Calendar = () => {
         날짜 : {displayDate}
       </DateInputContainer>
       <CalendarContainer>
-        <StyledCalendarInput
+        <CalendarInput
           type='text'
           id='date'
           value={dateInput}
@@ -166,18 +187,42 @@ const Calendar = () => {
         </DayContainer>
         <DateContainer>
           {prevMonthDays.map((date) => (
-            <ExtraDateComponent key={`prev-${date}`}>{date}</ExtraDateComponent>
+            <ExtraDateComponent
+              key={`prev-${date}`}
+              className={isSelected(date) ? 'selected' : ''}
+              onClick={() => handleDateSelect(currentDate.getFullYear(), currentDate.getMonth(), date)}
+            >
+              {date}
+            </ExtraDateComponent>
           ))}
-          {currentMonthDays.map((date) => (
-          <DateComponent
-            key={`current-${date}`}
-            className={isToday(date) ? 'today' : ''}
-          >
-            {date}
-          </DateComponent>
-          ))}
+          {currentMonthDays.map((date) => {
+            // 해당 날짜가 오늘 날짜인지 확인
+            const todayClass = isToday(date) ? 'today' : '';
+            // 해당 날짜가 선택된 날짜인지 확인
+            const selectedClass = isSelected(date) ? 'selected' : '';
+
+            // todayClass와 selectedClass가 동일하게 적용될 수 있도록 우선순위를 정하기
+            // 여기서는 'selected' 클래스를 우선시
+            const className = selectedClass ? selectedClass : todayClass;
+
+            return (
+              <DateComponent
+                key={`current-${date}`}
+                className={className}
+                onClick={() => handleDateSelect(currentDate.getFullYear(), currentDate.getMonth() + 1, date)}
+              >
+                {date}
+              </DateComponent>
+            );
+          })}
           {nextMonthDays.map((date) => (
-            <ExtraDateComponent key={`next-${date}`}>{date}</ExtraDateComponent>
+            <ExtraDateComponent
+              key={`next-${date}`}
+              className={isSelected(date) ? 'selected' : ''}
+              onClick={() => handleDateSelect(currentDate.getFullYear(), currentDate.getMonth() + 2, date)}
+            >
+              {date}
+            </ExtraDateComponent>
           ))}
         </DateContainer>
       </CalendarContainer>
@@ -210,7 +255,7 @@ const CalendarContainer = styled.div`
   font-family: 'Noto Sans KR';
 `;
 
-const StyledCalendarInput = styled.input<StyledCalendarInputProps>`
+const CalendarInput = styled.input<CalendarInputProps>`
   width: 228px;
   height: 10px;
   padding: 10px;
@@ -345,10 +390,18 @@ const DateComponent = styled.div`
   &:hover {
     cursor: pointer;
     background-color: #273241;
+    border: 1px solid #2383e2;
     border-radius: 20%;
   }
 
   &.today {
+    color: #eff5fd;
+    background-color: #eb5756;
+    border-radius: 50%;
+    font-weight: 600;
+  }
+
+  &.selected {
     color: #eff5fd;
     background-color: #2383e2;
     border-radius: 20%;
