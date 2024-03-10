@@ -267,7 +267,7 @@ const CalendarContainer = styled.div`
   margin: 5px;
   padding: 25px;
   width: 250px;
-  height: 320px;
+  height: 327px;
   max-width: 300px;
   font-family: 'Noto Sans KR';
 `;
@@ -403,6 +403,7 @@ const DateComponent = styled.div`
   text-align: center;
   font-size: 14px;
   color: #d5d5d5;
+  border: 1px solid transparent;
 
   &:hover {
     cursor: pointer;
