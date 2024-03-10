@@ -93,12 +93,21 @@ const Calendar = () => {
     );
   };
 
-  // 이전 달과 다음 달 버튼의 이벤트 핸들러를 업데이트
+  // 이전 달 버튼의 이벤트 핸들러를 업데이트
   const handlePreviousMonth = () => {
     setCurrentDate(
       new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1)
     );
   };
+
+  // 오늘로 가는 버튼의 이벤트 핸들러를 업데이트
+  const handleToday = () => {
+    setCurrentDate(
+      new Date()
+    );
+  };
+
+  // 다음 달 버튼의 이벤트 핸들러를 업데이트
   const handleNextMonth = () => {
     setCurrentDate(
       new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1)
@@ -198,6 +207,7 @@ const Calendar = () => {
         <CalendarHeader>
           <YearMonth>{yearMonth}</YearMonth>
           <LeftButton onClick={handlePreviousMonth} />
+          <TodayButton onClick={handleToday} />
           <RightButton onClick={handleNextMonth} />
         </CalendarHeader>
         <DayContainer>
@@ -304,7 +314,8 @@ const CalendarHeader = styled.div`
 `;
 
 const YearMonth = styled.div`
-  margin: 0px 0px 0px 6px;
+  flex: 1;
+  text-align: center;
   color: #c5c5c5;
   font-size: 15px;
 `;
@@ -332,8 +343,8 @@ const ButtonBase = styled.button`
 `;
 
 const LeftButton = styled(ButtonBase)`
-  margin-left: 100px;
-
+  margin: 0px 5px 0px 95px;
+  
   &::before {
     top: 18%;
     left: 18%;
@@ -351,12 +362,26 @@ const LeftButton = styled(ButtonBase)`
   }
 `;
 
+const TodayButton = styled.div`
+  width: .6rem;
+  height: .6rem;
+  padding: 1px;
+  cursor: pointer;
+  border-radius: 50%;
+  background-color: #6e6e6e;
+  
+  &:hover {
+    background-color: #c5c5c5;
+    border-radius: 50%;
+  }
+`;
+
 const RightButton = styled(ButtonBase)`
-  margin-right: 3px;
+  margin: 0px 3px 0px 5px;
 
   &::before {
     top: 20%;
-    left: 18%;
+    left: 29%;
     width: 0.7rem;
     height: 0.125rem;
     transform: translate(10%, 230%) rotate(45deg);
@@ -364,7 +389,7 @@ const RightButton = styled(ButtonBase)`
 
   &::after {
     top: 60%;
-    left: 30%;
+    left: 43%;
     width: 0.7rem;
     height: 0.125rem;
     transform: translate(-19%, -50%) rotate(-45deg);
