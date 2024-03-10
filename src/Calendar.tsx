@@ -301,7 +301,7 @@ const CalendarHeader = styled.div`
 `;
 
 const YearMonth = styled.div`
-  margin: 0px 0px 0px 4px;
+  margin: 0px 0px 0px 6px;
   color: #c5c5c5;
   font-size: 15px;
 `;
@@ -310,7 +310,7 @@ const ButtonBase = styled.button`
   border: none;
   background: none;
   cursor: pointer;
-  width: 1.875rem;
+  width: 1.475rem;
   height: 1.875rem;
   position: relative;
 
@@ -329,11 +329,11 @@ const ButtonBase = styled.button`
 `;
 
 const LeftButton = styled(ButtonBase)`
-  margin-left: 120px;
+  margin-left: 100px;
 
   &::before {
-    top: 19%;
-    left: 20%;
+    top: 18%;
+    left: 18%;
     width: 0.7rem;
     height: 0.125rem;
     transform: translate(10%, 230%) rotate(-45deg);
@@ -349,11 +349,11 @@ const LeftButton = styled(ButtonBase)`
 `;
 
 const RightButton = styled(ButtonBase)`
-  margin-right: -6px;
+  margin-right: 3px;
 
   &::before {
     top: 20%;
-    left: 20%;
+    left: 18%;
     width: 0.7rem;
     height: 0.125rem;
     transform: translate(10%, 230%) rotate(45deg);
