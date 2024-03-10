@@ -81,11 +81,14 @@ const Calendar = () => {
     );
   };
 
-  const isSelected = (date: number) => {
+  // 사용자가 선택한 날짜를 확인 후 업데이트
+  const isSelected = (date: number, monthOffset: number) => {
     const selectedDate = new Date(displayDate);
+    const adjustedMonth = currentDate.getMonth() + monthOffset;
+
     return (
       date === selectedDate.getDate() &&
-      currentDate.getMonth() === selectedDate.getMonth() &&
+      adjustedMonth === selectedDate.getMonth() &&
       currentDate.getFullYear() === selectedDate.getFullYear()
     );
   };
@@ -206,7 +209,7 @@ const Calendar = () => {
           {prevMonthDays.map((date) => (
             <ExtraDateComponent
               key={`prev-${date}`}
-              className={isSelected(date) ? 'selected' : ''}
+              className={isSelected(date, -1) ? 'selected' : ''}
               onClick={() => handleDateSelect(currentDate.getFullYear(), currentDate.getMonth(), date)}
             >
               {date}
@@ -216,7 +219,7 @@ const Calendar = () => {
             // 해당 날짜가 오늘 날짜인지 확인
             const todayClass = isToday(date) ? 'today' : '';
             // 해당 날짜가 선택된 날짜인지 확인
-            const selectedClass = isSelected(date) ? 'selected' : '';
+            const selectedClass = isSelected(date, 0) ? 'selected' : '';
 
             // todayClass와 selectedClass가 동일하게 적용될 수 있도록 우선순위를 정하기
             // 여기서는 'selected' 클래스를 우선시
@@ -235,7 +238,7 @@ const Calendar = () => {
           {nextMonthDays.map((date) => (
             <ExtraDateComponent
               key={`next-${date}`}
-              className={isSelected(date) ? 'selected' : ''}
+              className={isSelected(date, 1) ? 'selected' : ''}
               onClick={() => handleDateSelect(currentDate.getFullYear(), currentDate.getMonth() + 2, date)}
             >
               {date}
