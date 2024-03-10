@@ -178,6 +178,7 @@ const Calendar = () => {
           setDisplayDate(formattedDate); // DateInputContainer에 표시될 날짜를 업데이트
           setDateInput(formattedDate);
           setIsInputValid(true);
+          setCurrentDate(dateObj); // Date 객체를 활용해 현재 날짜 상태를 업데이트
         } else {
           alert('유효하지 않은 날짜입니다. 올바른 날짜를 입력해 주세요.');
           setIsInputValid(false);
