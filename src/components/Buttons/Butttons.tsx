@@ -1,4 +1,8 @@
-import { StyledLeftButton, StyledTodayButton, StyledRightButton } from '../styles/Buttons.style';
+import {
+  StyledLeftButton,
+  StyledTodayButton,
+  StyledRightButton,
+} from '../../styles/Buttons.style';
 
 type ButtonProps = {
   setCurrentDate: (date: Date) => void;
@@ -7,8 +11,11 @@ type ButtonProps = {
 
 const LeftButton: React.FC<ButtonProps> = ({ setCurrentDate, currentDate }) => {
   const handlePreviousMonth = () => {
-    if (currentDate) { // currentDate가 정의되어 있으면 해당 로직을 실행
-      setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1));
+    if (currentDate) {
+      // currentDate가 정의되어 있으면 해당 로직을 실행
+      setCurrentDate(
+        new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1)
+      );
     }
   };
 
@@ -23,10 +30,15 @@ const TodayButton: React.FC<ButtonProps> = ({ setCurrentDate }) => {
   return <StyledTodayButton onClick={handleToday} />;
 };
 
-const RightButton: React.FC<ButtonProps> = ({ setCurrentDate, currentDate }) => {
+const RightButton: React.FC<ButtonProps> = ({
+  setCurrentDate,
+  currentDate,
+}) => {
   const handleNextMonth = () => {
     if (currentDate) {
-      setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1));
+      setCurrentDate(
+        new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1)
+      );
     }
   };
 
