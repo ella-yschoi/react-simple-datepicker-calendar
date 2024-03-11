@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { useState } from 'react';
 import { DAYS_OF_WEEK_KO } from './constants/daysOfWeek';
+import DATE_FORMAT from './constants/dateFormat';
 
 type CalendarInputProps = React.InputHTMLAttributes<HTMLInputElement> & {
   $isInputValid: boolean;
@@ -118,7 +119,7 @@ const Calendar = () => {
   const { prevMonthDays, currentMonthDays, nextMonthDays } = renderCalendar(currentDate);
 
   // YYYY년 MM월 형태
-  const yearMonth = `${currentDate.getFullYear()}년 ${currentDate.getMonth() + 1}월`;
+  const displayYearMonth = `${currentDate.getFullYear()}년 ${currentDate.getMonth() + 1}월`;
 
   const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setDateInput(event.target.value); // 입력 필드의 값을 dateInput 상태에 저장
@@ -175,7 +176,7 @@ const Calendar = () => {
         if (isValidDate) {
           // 포맷팅된 날짜로 상태 업데이트
           const formattedDate = `${yearStr.padStart(4, '0')}/${monthStr.padStart(2, '0')}/${dayStr.padStart(2, '0')}`;
-          setDisplayDate(formattedDate); // DateInputContainer에 표시될 날짜를 업데이트
+          setDisplayDate(formattedDate); // SelectedDateContainer에 표시될 날짜를 업데이트
           setDateInput(formattedDate);
           setIsInputValid(true);
           setCurrentDate(dateObj); // Date 객체를 활용해 현재 날짜 상태를 업데이트
@@ -192,9 +193,9 @@ const Calendar = () => {
 
   return (
     <>
-      <DateInputContainer>
+      <SelectedDateContainer>
         날짜 : {displayDate}
-      </DateInputContainer>
+      </SelectedDateContainer>
       <CalendarContainer>
         <CalendarInput
           type='text'
@@ -202,29 +203,29 @@ const Calendar = () => {
           value={dateInput}
           onChange={handleDateChange}
           onKeyDown={handleKeyDown}
-          placeholder='YYYY/MM/DD'
+          placeholder={DATE_FORMAT}
           $isInputValid={$isInputValid} // 유효성 상태를 props로 전달
         />
         <CalendarHeader>
-          <YearMonth>{yearMonth}</YearMonth>
+          <YearMonthDisplay>{displayYearMonth}</YearMonthDisplay>
           <LeftButton onClick={handlePreviousMonth} />
           <TodayButton onClick={handleToday} />
           <RightButton onClick={handleNextMonth} />
         </CalendarHeader>
-        <DayContainer>
+        <DayComponent>
           {DAYS_OF_WEEK_KO.map((day) => (
-            <DayComponent key={day}>{day}</DayComponent>
+            <DayUnit key={day}>{day}</DayUnit>
           ))}
-        </DayContainer>
-        <DateContainer>
+        </DayComponent>
+        <DateComponent>
           {prevMonthDays.map((date) => (
-            <ExtraDateComponent
+            <ExtraDateUnit
               key={`prev-${date}`}
               className={isSelected(date, -1) ? 'selected' : ''}
               onClick={() => handleDateSelect(currentDate.getFullYear(), currentDate.getMonth(), date)}
             >
               {date}
-            </ExtraDateComponent>
+            </ExtraDateUnit>
           ))}
           {currentMonthDays.map((date) => {
             // 해당 날짜가 오늘 날짜인지 확인
@@ -237,25 +238,25 @@ const Calendar = () => {
             const className = selectedClass ? selectedClass : todayClass;
 
             return (
-              <DateComponent
+              <DateUnit
                 key={`current-${date}`}
                 className={className}
                 onClick={() => handleDateSelect(currentDate.getFullYear(), currentDate.getMonth() + 1, date)}
               >
                 {date}
-              </DateComponent>
+              </DateUnit>
             );
           })}
           {nextMonthDays.map((date) => (
-            <ExtraDateComponent
+            <ExtraDateUnit
               key={`next-${date}`}
               className={isSelected(date, 1) ? 'selected' : ''}
               onClick={() => handleDateSelect(currentDate.getFullYear(), currentDate.getMonth() + 2, date)}
             >
               {date}
-            </ExtraDateComponent>
+            </ExtraDateUnit>
           ))}
-        </DateContainer>
+        </DateComponent>
       </CalendarContainer>
     </>
   );
@@ -263,7 +264,7 @@ const Calendar = () => {
 
 export default Calendar;
 
-const DateInputContainer = styled.div`
+const SelectedDateContainer = styled.div`
   margin: 5px;
   padding: 25px 25px 25px 28px;
   width: 247px;
@@ -314,7 +315,7 @@ const CalendarHeader = styled.div`
   margin: 12px 0px;
 `;
 
-const YearMonth = styled.div`
+const YearMonthDisplay = styled.div`
   flex: 1;
   text-align: center;
   color: #c5c5c5;
@@ -397,14 +398,14 @@ const RightButton = styled(ButtonBase)`
   }
 `;
 
-const DayContainer = styled.div`
+const DayComponent = styled.div`
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 10px;
   margin-bottom: 10px;
 `;
 
-const DayComponent = styled.div`
+const DayUnit = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -416,13 +417,13 @@ const DayComponent = styled.div`
   color: #899797;
 `;
 
-const DateContainer = styled.div`
+const DateComponent = styled.div`
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 10px;
 `;
 
-const DateComponent = styled.div`
+const DateUnit = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -455,6 +456,6 @@ const DateComponent = styled.div`
   }
 `;
 
-const ExtraDateComponent = styled(DateComponent)`
+const ExtraDateUnit = styled(DateUnit)`
   color: #899797;
 `;
