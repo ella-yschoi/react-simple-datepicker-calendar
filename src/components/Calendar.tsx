@@ -1,13 +1,9 @@
 import styled from 'styled-components';
 import { useState } from 'react';
 
-import { DAYS_OF_WEEK_KO } from './constants/daysOfWeek';
-import DATE_FORMAT from './constants/dateFormat';
-import { LeftButton, TodayButton, RightButton } from './components/Butttons';
-
-type CalendarInputProps = React.InputHTMLAttributes<HTMLInputElement> & {
-  $isInputValid: boolean;
-};
+import { DAYS_OF_WEEK_KO } from '../constants/daysOfWeek';
+import { LeftButton, TodayButton, RightButton } from './Butttons';
+import CalendarInput from './Inputs';
 
 const renderCalendar = (currentDate: Date) => {
   const showYear = currentDate.getFullYear();
@@ -31,7 +27,7 @@ const renderCalendar = (currentDate: Date) => {
   }
 
   // 현재 달의 날짜들을 계산
-  const currentDates = Array.from (
+  const currentDates = Array.from(
     { length: currentMonthLastDate },
     (_, i) => i + 1
   );
@@ -97,101 +93,67 @@ const Calendar = () => {
   };
 
   // 달력의 날짜들을 가져오기
-  const { prevMonthDays, currentMonthDays, nextMonthDays } = renderCalendar(currentDate);
+  const { prevMonthDays, currentMonthDays, nextMonthDays } =
+    renderCalendar(currentDate);
 
   // YYYY년 MM월 형태
-  const displayYearMonth = `${currentDate.getFullYear()}년 ${currentDate.getMonth() + 1}월`;
-
-  const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setDateInput(event.target.value); // 입력 필드의 값을 dateInput 상태에 저장
-  }
+  const displayYearMonth = `${currentDate.getFullYear()}년 ${
+    currentDate.getMonth() + 1
+  }월`;
 
   const handleDateSelect = (year: number, month: number, day: number) => {
     let updatedYear = year;
     let updatedMonth = month - 1; // JavaScript의 Date 객체는 0부터 11까지 월을 나타냄
-  
+
     // 이전 달 날짜 클릭 시 년/월 조정
     if (month === 0) {
       updatedYear = year - 1;
       updatedMonth = 11; // 12월
     }
-  
+
     // 다음 달 날짜 클릭 시 년/월 조정
     if (month === 13) {
       updatedYear = year + 1;
       updatedMonth = 0; // 1월
     }
-  
+
     const updatedDate = new Date(updatedYear, updatedMonth, day);
     setCurrentDate(updatedDate);
-  
+
     // 포맷팅된 날짜로 상태 업데이트
-    const formattedMonth = updatedMonth + 1 < 10 ? `0${updatedMonth + 1}` : `${updatedMonth + 1}`;
+    const formattedMonth =
+      updatedMonth + 1 < 10 ? `0${updatedMonth + 1}` : `${updatedMonth + 1}`;
     const formattedDay = day < 10 ? `0${day}` : `${day}`;
     const formattedDate = `${updatedYear}/${formattedMonth}/${formattedDay}`;
-    
+
     setDisplayDate(formattedDate);
     setDateInput(formattedDate);
   };
-  
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter') {
-      const dateRegex = /^\d{4}\/\d{1,2}\/\d{1,2}$/;
-      const isValidFormat = dateRegex.test(dateInput)
-
-      if (isValidFormat) {
-        // 입력된 날짜에서 년, 월, 일을 추출
-        const [yearStr, monthStr, dayStr] = dateInput.split('/');
-        // 년, 월, 일을 숫자로 변환
-        const year = parseInt(yearStr, 10);
-        const month = parseInt(monthStr, 10);
-        const day = parseInt(dayStr, 10);
-  
-        // 날짜 객체를 생성하여 유효성 검사
-        const dateObj = new Date(year, month - 1, day);
-        const isValidDate =
-          dateObj.getFullYear() === year &&
-          dateObj.getMonth() === month - 1 &&
-          dateObj.getDate() === day;
-        
-        if (isValidDate) {
-          // 포맷팅된 날짜로 상태 업데이트
-          const formattedDate = `${yearStr.padStart(4, '0')}/${monthStr.padStart(2, '0')}/${dayStr.padStart(2, '0')}`;
-          setDisplayDate(formattedDate); // SelectedDateContainer에 표시될 날짜를 업데이트
-          setDateInput(formattedDate);
-          setIsInputValid(true);
-          setCurrentDate(dateObj); // Date 객체를 활용해 현재 날짜 상태를 업데이트
-        } else {
-          alert('유효하지 않은 날짜입니다. 올바른 날짜를 입력해 주세요.');
-          setIsInputValid(false);
-        }
-      } else {
-        alert('유효하지 않은 형식입니다. YYYY/MM/DD 형식으로 입력해 주세요.');
-        setIsInputValid(false);
-      }
-    }
-  };  
 
   return (
     <>
-      <SelectedDateContainer>
-        날짜 : {displayDate}
-      </SelectedDateContainer>
+      <SelectedDateContainer>날짜 : {displayDate}</SelectedDateContainer>
       <CalendarContainer>
         <CalendarInput
-          type='text'
-          id='date'
-          value={dateInput}
-          onChange={handleDateChange}
-          onKeyDown={handleKeyDown}
-          placeholder={DATE_FORMAT}
-          $isInputValid={$isInputValid} // 유효성 상태를 props로 전달
+          dateInput={dateInput}
+          setDateInput={setDateInput}
+          displayDate={displayDate}
+          setDisplayDate={setDisplayDate}
+          setIsInputValid={setIsInputValid}
+          setCurrentDate={setCurrentDate}
+          $isInputValid={$isInputValid}
         />
         <CalendarHeader>
           <YearMonthDisplay>{displayYearMonth}</YearMonthDisplay>
-          <LeftButton currentDate={currentDate} setCurrentDate={setCurrentDate} />
+          <LeftButton
+            currentDate={currentDate}
+            setCurrentDate={setCurrentDate}
+          />
           <TodayButton setCurrentDate={setCurrentDate} />
-          <RightButton currentDate={currentDate} setCurrentDate={setCurrentDate} />
+          <RightButton
+            currentDate={currentDate}
+            setCurrentDate={setCurrentDate}
+          />
         </CalendarHeader>
         <DayComponent>
           {DAYS_OF_WEEK_KO.map((day) => (
@@ -203,7 +165,13 @@ const Calendar = () => {
             <ExtraDateUnit
               key={`prev-${date}`}
               className={isSelected(date, -1) ? 'selected' : ''}
-              onClick={() => handleDateSelect(currentDate.getFullYear(), currentDate.getMonth(), date)}
+              onClick={() =>
+                handleDateSelect(
+                  currentDate.getFullYear(),
+                  currentDate.getMonth(),
+                  date
+                )
+              }
             >
               {date}
             </ExtraDateUnit>
@@ -222,7 +190,13 @@ const Calendar = () => {
               <DateUnit
                 key={`current-${date}`}
                 className={className}
-                onClick={() => handleDateSelect(currentDate.getFullYear(), currentDate.getMonth() + 1, date)}
+                onClick={() =>
+                  handleDateSelect(
+                    currentDate.getFullYear(),
+                    currentDate.getMonth() + 1,
+                    date
+                  )
+                }
               >
                 {date}
               </DateUnit>
@@ -232,7 +206,13 @@ const Calendar = () => {
             <ExtraDateUnit
               key={`next-${date}`}
               className={isSelected(date, 1) ? 'selected' : ''}
-              onClick={() => handleDateSelect(currentDate.getFullYear(), currentDate.getMonth() + 2, date)}
+              onClick={() =>
+                handleDateSelect(
+                  currentDate.getFullYear(),
+                  currentDate.getMonth() + 2,
+                  date
+                )
+              }
             >
               {date}
             </ExtraDateUnit>
@@ -266,27 +246,6 @@ const CalendarContainer = styled.div`
   height: 327px;
   max-width: 300px;
   font-family: 'Noto Sans KR';
-`;
-
-const CalendarInput = styled.input<CalendarInputProps>`
-  width: 228px;
-  height: 10px;
-  padding: 10px;
-  border: 1px solid ${props => (props.$isInputValid ? '#404040' : '#eb5756')};
-  border-radius: 8px;
-  background: none;
-  text-align: left;
-  color: #cccccc;
-  font-size: 15px;
-  
-  &::placeholder {
-    color: #757575;
-  }
-
-  &:focus {
-    outline: none;
-    border-color: ${props => (props.$isInputValid ? '#2383e2' : '#eb5756')};
-  }
 `;
 
 const CalendarHeader = styled.div`
