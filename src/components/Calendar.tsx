@@ -1,9 +1,12 @@
-import styled from 'styled-components';
 import { useState } from 'react';
 
-import { DAYS_OF_WEEK_KO } from '../constants/daysOfWeek';
-import { LeftButton, TodayButton, RightButton } from './Butttons';
+import CalendarContainer from './Containers/CalendarContainer';
+import HeaderContainer from './Containers/HeaderContainer';
 import CalendarInput from './Inputs';
+import { SelectedDateDisplay, YearMonthDisplay } from './Displays';
+import { LeftButton, TodayButton, RightButton } from './Butttons';
+import DayGrid from './Grids/DayGrid';
+import DateGrid from './Grids/DateGrid';
 
 const renderCalendar = (currentDate: Date) => {
   const showYear = currentDate.getFullYear();
@@ -132,7 +135,7 @@ const Calendar = () => {
 
   return (
     <>
-      <SelectedDateContainer>날짜 : {displayDate}</SelectedDateContainer>
+      <SelectedDateDisplay displayDate={displayDate} />
       <CalendarContainer>
         <CalendarInput
           dateInput={dateInput}
@@ -143,8 +146,8 @@ const Calendar = () => {
           setCurrentDate={setCurrentDate}
           $isInputValid={$isInputValid}
         />
-        <CalendarHeader>
-          <YearMonthDisplay>{displayYearMonth}</YearMonthDisplay>
+        <HeaderContainer>
+          <YearMonthDisplay displayYearMonth={displayYearMonth} />
           <LeftButton
             currentDate={currentDate}
             setCurrentDate={setCurrentDate}
@@ -154,172 +157,20 @@ const Calendar = () => {
             currentDate={currentDate}
             setCurrentDate={setCurrentDate}
           />
-        </CalendarHeader>
-        <DayComponent>
-          {DAYS_OF_WEEK_KO.map((day) => (
-            <DayUnit key={day}>{day}</DayUnit>
-          ))}
-        </DayComponent>
-        <DateComponent>
-          {prevMonthDays.map((date) => (
-            <ExtraDateUnit
-              key={`prev-${date}`}
-              className={isSelected(date, -1) ? 'selected' : ''}
-              onClick={() =>
-                handleDateSelect(
-                  currentDate.getFullYear(),
-                  currentDate.getMonth(),
-                  date
-                )
-              }
-            >
-              {date}
-            </ExtraDateUnit>
-          ))}
-          {currentMonthDays.map((date) => {
-            // 해당 날짜가 오늘 날짜인지 확인
-            const todayClass = isToday(date) ? 'today' : '';
-            // 해당 날짜가 선택된 날짜인지 확인
-            const selectedClass = isSelected(date, 0) ? 'selected' : '';
-
-            // todayClass와 selectedClass가 동일하게 적용될 수 있도록 우선순위를 정하기
-            // 여기서는 'selected' 클래스를 우선시
-            const className = selectedClass ? selectedClass : todayClass;
-
-            return (
-              <DateUnit
-                key={`current-${date}`}
-                className={className}
-                onClick={() =>
-                  handleDateSelect(
-                    currentDate.getFullYear(),
-                    currentDate.getMonth() + 1,
-                    date
-                  )
-                }
-              >
-                {date}
-              </DateUnit>
-            );
-          })}
-          {nextMonthDays.map((date) => (
-            <ExtraDateUnit
-              key={`next-${date}`}
-              className={isSelected(date, 1) ? 'selected' : ''}
-              onClick={() =>
-                handleDateSelect(
-                  currentDate.getFullYear(),
-                  currentDate.getMonth() + 2,
-                  date
-                )
-              }
-            >
-              {date}
-            </ExtraDateUnit>
-          ))}
-        </DateComponent>
+        </HeaderContainer>
+        <DayGrid />
+        <DateGrid
+          prevMonthDays={prevMonthDays}
+          currentMonthDays={currentMonthDays}
+          nextMonthDays={nextMonthDays}
+          isToday={isToday}
+          isSelected={isSelected}
+          handleDateSelect={handleDateSelect}
+          currentDate={currentDate}
+        />
       </CalendarContainer>
     </>
   );
 };
 
 export default Calendar;
-
-const SelectedDateContainer = styled.div`
-  margin: 5px;
-  padding: 25px 25px 25px 28px;
-  width: 247px;
-  height: 10px;
-  background-color: #252525;
-  border-radius: 10px;
-  font-size: 15px;
-  color: #c5c5c5;
-  font-family: 'Noto Sans KR';
-`;
-
-const CalendarContainer = styled.div`
-  background-color: #252525;
-  border-radius: 10px;
-  margin: 5px;
-  padding: 25px;
-  width: 250px;
-  height: 327px;
-  max-width: 300px;
-  font-family: 'Noto Sans KR';
-`;
-
-const CalendarHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 12px 0px;
-`;
-
-const YearMonthDisplay = styled.div`
-  flex: 1;
-  text-align: center;
-  color: #c5c5c5;
-  font-size: 15px;
-`;
-
-const DayComponent = styled.div`
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 10px;
-  margin-bottom: 10px;
-`;
-
-const DayUnit = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 5px;
-  width: 15px;
-  height: 10px;
-  font-size: 14px;
-  color: #899797;
-`;
-
-const DateComponent = styled.div`
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 10px;
-`;
-
-const DateUnit = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 5px;
-  width: 15px;
-  height: 15px;
-  text-align: center;
-  font-size: 14px;
-  color: #d5d5d5;
-  border: 1px solid transparent;
-
-  &:hover {
-    cursor: pointer;
-    background-color: #273241;
-    border: 1px solid #2383e2;
-    border-radius: 20%;
-  }
-
-  &.today {
-    color: #eff5fd;
-    background-color: #eb5756;
-    border-radius: 50%;
-    font-weight: 600;
-  }
-
-  &.selected {
-    color: #eff5fd;
-    background-color: #2383e2;
-    border-radius: 20%;
-  }
-`;
-
-const ExtraDateUnit = styled(DateUnit)`
-  color: #899797;
-`;
