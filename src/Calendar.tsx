@@ -1,7 +1,9 @@
 import styled from 'styled-components';
 import { useState } from 'react';
+
 import { DAYS_OF_WEEK_KO } from './constants/daysOfWeek';
 import DATE_FORMAT from './constants/dateFormat';
+import { LeftButton, TodayButton, RightButton } from './components/Butttons';
 
 type CalendarInputProps = React.InputHTMLAttributes<HTMLInputElement> & {
   $isInputValid: boolean;
@@ -91,27 +93,6 @@ const Calendar = () => {
       date === selectedDate.getDate() &&
       adjustedMonth === selectedDate.getMonth() &&
       currentDate.getFullYear() === selectedDate.getFullYear()
-    );
-  };
-
-  // 이전 달 버튼의 이벤트 핸들러를 업데이트
-  const handlePreviousMonth = () => {
-    setCurrentDate(
-      new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1)
-    );
-  };
-
-  // 오늘로 가는 버튼의 이벤트 핸들러를 업데이트
-  const handleToday = () => {
-    setCurrentDate(
-      new Date()
-    );
-  };
-
-  // 다음 달 버튼의 이벤트 핸들러를 업데이트
-  const handleNextMonth = () => {
-    setCurrentDate(
-      new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1)
     );
   };
 
@@ -208,9 +189,9 @@ const Calendar = () => {
         />
         <CalendarHeader>
           <YearMonthDisplay>{displayYearMonth}</YearMonthDisplay>
-          <LeftButton onClick={handlePreviousMonth} />
-          <TodayButton onClick={handleToday} />
-          <RightButton onClick={handleNextMonth} />
+          <LeftButton currentDate={currentDate} setCurrentDate={setCurrentDate} />
+          <TodayButton setCurrentDate={setCurrentDate} />
+          <RightButton currentDate={currentDate} setCurrentDate={setCurrentDate} />
         </CalendarHeader>
         <DayComponent>
           {DAYS_OF_WEEK_KO.map((day) => (
@@ -320,82 +301,6 @@ const YearMonthDisplay = styled.div`
   text-align: center;
   color: #c5c5c5;
   font-size: 15px;
-`;
-
-const ButtonBase = styled.button`
-  border: none;
-  background: none;
-  cursor: pointer;
-  width: 1.475rem;
-  height: 1.875rem;
-  position: relative;
-
-  &:hover {
-    background-color: #313131;
-    border-radius: 20%;
-  }
-
-  &::before,
-  &::after {
-    content: '';
-    position: absolute;
-    background-color: #6e6e6e;
-    border-radius: 10px;
-  }
-`;
-
-const LeftButton = styled(ButtonBase)`
-  margin: 0px 5px 0px 95px;
-  
-  &::before {
-    top: 18%;
-    left: 18%;
-    width: 0.7rem;
-    height: 0.125rem;
-    transform: translate(10%, 230%) rotate(-45deg);
-  }
-
-  &::after {
-    top: 60%;
-    left: 30%;
-    width: 0.7rem;
-    height: 0.125rem;
-    transform: translate(-19%, -50%) rotate(45deg);
-  }
-`;
-
-const TodayButton = styled.div`
-  width: .6rem;
-  height: .6rem;
-  padding: 1px;
-  cursor: pointer;
-  border-radius: 50%;
-  background-color: #6e6e6e;
-  
-  &:hover {
-    background-color: #c5c5c5;
-    border-radius: 50%;
-  }
-`;
-
-const RightButton = styled(ButtonBase)`
-  margin: 0px 3px 0px 5px;
-
-  &::before {
-    top: 20%;
-    left: 29%;
-    width: 0.7rem;
-    height: 0.125rem;
-    transform: translate(10%, 230%) rotate(45deg);
-  }
-
-  &::after {
-    top: 60%;
-    left: 43%;
-    width: 0.7rem;
-    height: 0.125rem;
-    transform: translate(-19%, -50%) rotate(-45deg);
-  }
 `;
 
 const DayComponent = styled.div`
