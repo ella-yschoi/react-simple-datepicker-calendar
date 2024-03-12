@@ -1,6 +1,7 @@
 {
-  "name": "datepicker-calendar",
+  "name": "@ella-yschoi/datepicker-calendar",
   "version": "1.0.0",
+  "private": "false",
   "description": "A Simple and Useful Datepicker Calendar Library for React",
   "main": "index.js",
   "scripts": {
