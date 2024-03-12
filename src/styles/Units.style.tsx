@@ -1,6 +1,12 @@
 import styled from 'styled-components';
 
-const StyledDayUnit = styled.div`
+type DateProps = {
+  $dayFontColor?: string;
+  $currentDateFontColor?: string;
+  $prevNextDateFontColor?: string;
+};
+
+const StyledDayUnit = styled.div<DateProps>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -9,10 +15,10 @@ const StyledDayUnit = styled.div`
   width: 15px;
   height: 10px;
   font-size: 14px;
-  color: #899797;
+  color: ${props => props.$dayFontColor || '#899797'};
 `;
 
-const StyledDateUnit = styled.div`
+const StyledDateUnit = styled.div<DateProps>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -21,7 +27,7 @@ const StyledDateUnit = styled.div`
   height: 15px;
   text-align: center;
   font-size: 14px;
-  color: #d5d5d5;
+  color: ${props => props.$currentDateFontColor || '#d5d5d5'};
   border: 1px solid transparent;
 
   &:hover {
@@ -46,7 +52,7 @@ const StyledDateUnit = styled.div`
 `;
 
 const StyledExtraDateUnit = styled(StyledDateUnit)`
-  color: #899797;
+  color: ${props => props.$prevNextDateFontColor || props.$currentDateFontColor || '#899797'};
 `;
 
 export { StyledDayUnit, StyledDateUnit, StyledExtraDateUnit };

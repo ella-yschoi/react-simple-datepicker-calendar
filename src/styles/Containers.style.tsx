@@ -1,7 +1,11 @@
 import styled from 'styled-components';
 
-const StyledCalendarContainer = styled.div`
-  background-color: #252525;
+type CalendarContainerProps = {
+  $calendarBackgroundColor?: string;
+};
+
+const StyledCalendarContainer = styled.div<CalendarContainerProps>`
+  background-color: ${props => props.$calendarBackgroundColor || '#252525'};
   border-radius: 10px;
   margin: 5px;
   padding: 25px;
