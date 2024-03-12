@@ -1,12 +1,12 @@
 import { useState } from 'react';
 
-import CalendarContainer from './Containers/CalendarContainer';
-import HeaderContainer from './Containers/HeaderContainer';
-import CalendarInput from './Inputs/Inputs';
-import { SelectedDateDisplay, YearMonthDisplay } from './Displays/Displays';
-import { LeftButton, TodayButton, RightButton } from './Buttons/Butttons';
-import DayGrid from './Grids/DayGrid';
-import DateGrid from './Grids/DateGrid';
+import CalendarContainer from './containers/CalendarContainer';
+import HeaderContainer from './containers/HeaderContainer';
+import CalendarInput from './inputs/Inputs';
+import { SelectedDateDisplay, YearMonthDisplay } from './displays/Displays';
+import { LeftButton, TodayButton, RightButton } from './buttons/Butttons';
+import DayGrid from './grids/DayGrid';
+import DateGrid from './grids/DateGrid';
 
 import calculateDate from '../utils/calculateDate';
 import handleDateSelect from '../utils/handleDate';
