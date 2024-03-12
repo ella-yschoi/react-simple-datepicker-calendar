@@ -1,5 +1,5 @@
 import GlobalStyles from './styles/GlobalStyles';
-import Calendar from './Calendar';
+import Calendar from './components';
 
 function App() {
   return (
