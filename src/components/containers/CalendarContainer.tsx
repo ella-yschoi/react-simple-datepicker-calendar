@@ -5,7 +5,7 @@ type CalendarContainerProps = {
 };
 
 const CalendarContainer: React.FC<CalendarContainerProps> = ({ children }) => {
-  return <StyledCalendarContainer>{children}</StyledCalendarContainer>;
+  return <StyledCalendarContainer $calendarBackgroundColor="#252525">{children}</StyledCalendarContainer>;
 };
 
 export default CalendarContainer;
