@@ -3,6 +3,7 @@
 <p align="left" width="100%"><a href="https://www.npmjs.com/package/react-simple-datepicker-calendar"><img width="1000" alt="react-simple-datepicker-calendar" src="https://github.com/ella-yschoi/react-simple-datepicker-calendar/assets/123397411/22d674d8-8ff5-41b5-b8fd-ae17ae063817"></a>
 
 <br/>
+<br/>
 
 ## Features
 
@@ -24,7 +25,6 @@ npm install react-simple-datepicker-calendar
 
 <a href="https://www.npmjs.com/package/react-simple-datepicker-calendar"><img src="https://img.shields.io/npm/v/react-simple-datepicker-calendar.svg?style=flat-square" alt="npm version"/></a> <img src="https://img.shields.io/bundlephobia/minzip/react-simple-datepicker-calendar" alt="Min gzipped size"/>
 
-<br/>
 <br/>
 
 ## Usage
