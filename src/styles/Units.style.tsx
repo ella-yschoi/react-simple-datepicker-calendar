@@ -14,7 +14,7 @@ const StyledDayUnit = styled.div<DateProps>`
   padding: 5px;
   width: 15px;
   height: 10px;
-  font-size: 14px;
+  font-size: 12px;
   color: ${props => props.$dayFontColor || '#899797'};
 `;
 

@@ -21,7 +21,10 @@ const Calendar: React.FC = () => {
   const { prevMonthDays, currentMonthDays, nextMonthDays } =
     calculateDate(currentDate);
     
-  const displayYearMonth = `${currentDate.getFullYear()}년 ${currentDate.getMonth() + 1}월`;
+    const displayYearMonth = currentDate.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short'
+    });
 
   return (
     <>

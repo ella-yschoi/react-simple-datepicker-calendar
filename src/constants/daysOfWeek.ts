@@ -1,11 +1,11 @@
 const DAYS_OF_WEEK_EN = [
-  'SUN',
-  'MON',
-  'TUE',
-  'WED',
-  'THU',
-  'FRI',
-  'SAT',
+  'Su',
+  'Mo',
+  'Tu',
+  'We',
+  'Th',
+  'Fr',
+  'Sa',
 ];
 
 const DAYS_OF_WEEK_KO = [

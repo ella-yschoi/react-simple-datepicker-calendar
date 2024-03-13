@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 const StyledDayGrid = styled.div`
+  margin-left: 0.5px;
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 10px;

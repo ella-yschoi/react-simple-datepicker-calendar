@@ -12,7 +12,7 @@ const StyledSelectedDateDisplay = styled.div<SelectedDateDisplayProps>`
   height: 10px;
   background-color: ${props => props.displayBackgroundColor || '#252525'};
   border-radius: 10px;
-  font-size: 15px;
+  font-size: 14px;
   color: ${props => props.displayFontColor || '#c5c5c5'};
   font-family: 'Noto Sans KR';
 `;
@@ -20,7 +20,7 @@ const StyledSelectedDateDisplay = styled.div<SelectedDateDisplayProps>`
 
 const StyledYearMonthDisplay = styled.div`
   flex: 1;
-  text-align: center;
+  margin-left: 5px;
   color: #c5c5c5;
   font-size: 15px;
 `;
