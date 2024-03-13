@@ -15,6 +15,8 @@ type DatesGridProps = {
   handleDateSelect: (year: number, month: number, day: number) => void;
   currentDate: Date;
   selectedDate: Date;
+  currentDateFontColor: string;
+  prevNextDateFontColor: string;
 };
 
 const DateGrid: React.FC<DatesGridProps> = ({
@@ -26,6 +28,8 @@ const DateGrid: React.FC<DatesGridProps> = ({
   handleDateSelect,
   currentDate,
   selectedDate,
+  currentDateFontColor,
+  prevNextDateFontColor,
 }) => (
   <StyledDateGrid>
     {prevMonthDays.map((date) => (
@@ -34,6 +38,7 @@ const DateGrid: React.FC<DatesGridProps> = ({
         className={
           isSelected(date, -1, currentDate, selectedDate) ? 'selected' : ''
         }
+        $prevNextDateFontColor={prevNextDateFontColor}
         onClick={() =>
           handleDateSelect(
             currentDate.getFullYear(),
@@ -54,6 +59,7 @@ const DateGrid: React.FC<DatesGridProps> = ({
         <DateUnit
           key={`current-${date}`}
           className={className}
+          $currentDateFontColor={currentDateFontColor}
           onClick={() =>
             handleDateSelect(
               currentDate.getFullYear(),
@@ -71,6 +77,7 @@ const DateGrid: React.FC<DatesGridProps> = ({
         className={
           isSelected(date, -1, currentDate, selectedDate) ? 'selected' : ''
         }
+        $prevNextDateFontColor={prevNextDateFontColor}
         onClick={() =>
           handleDateSelect(
             currentDate.getFullYear(),

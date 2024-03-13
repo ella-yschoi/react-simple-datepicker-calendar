@@ -8,13 +8,13 @@ interface DateUnitProps {
   $prevNextDateFontColor?: string;
 }
 
-const DateUnit: React.FC<DateUnitProps> = ({ className, onClick, date, $currentDateFontColor = '#d5d5d5' }) => (
+const DateUnit: React.FC<DateUnitProps> = ({ className, onClick, date, $currentDateFontColor }) => (
   <StyledDateUnit className={className} onClick={onClick} $currentDateFontColor={$currentDateFontColor}>
     {date}
   </StyledDateUnit>
 );
 
-const ExtraDateUnit: React.FC<DateUnitProps> = ({ className, onClick, date, $prevNextDateFontColor = '#899797' }) => (
+const ExtraDateUnit: React.FC<DateUnitProps> = ({ className, onClick, date, $prevNextDateFontColor }) => (
   <StyledExtraDateUnit className={className} onClick={onClick} $prevNextDateFontColor={$prevNextDateFontColor}>
     {date}
   </StyledExtraDateUnit>

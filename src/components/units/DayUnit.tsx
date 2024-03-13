@@ -5,7 +5,7 @@ type DayUnitProps = {
   $dayFontColor?: string;
 };
 
-const DayUnit: React.FC<DayUnitProps> = ({ day, $dayFontColor = '#899797' }) => (
+const DayUnit: React.FC<DayUnitProps> = ({ day, $dayFontColor }) => (
   <StyledDayUnit $dayFontColor={$dayFontColor}>{day}</StyledDayUnit>
 );
 

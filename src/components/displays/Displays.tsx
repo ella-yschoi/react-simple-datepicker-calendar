@@ -3,8 +3,16 @@ import {
   StyledYearMonthDisplay,
 } from '../../styles/Displays.style';
 
-const SelectedDateDisplay: React.FC<{ displayDate: string }> = ({
+type SelectedDateDisplayProps = {
+  displayDate: string;
+  $displayBackgroundColor?: string;
+  $displayFontColor?: string;
+};
+
+const SelectedDateDisplay: React.FC<SelectedDateDisplayProps> = ({
   displayDate,
+  $displayBackgroundColor,
+  $displayFontColor
 }) => {
 
   const dateParts = displayDate.split('/').map(part => parseInt(part, 10));
@@ -24,7 +32,12 @@ const SelectedDateDisplay: React.FC<{ displayDate: string }> = ({
   }
 
   return (
-    <StyledSelectedDateDisplay>Date : {formattedDate}</StyledSelectedDateDisplay>
+    <StyledSelectedDateDisplay 
+      $displayBackgroundColor={$displayBackgroundColor} 
+      $displayFontColor={$displayFontColor}
+    >
+      Date : {formattedDate}
+    </StyledSelectedDateDisplay>
   );
 };
 

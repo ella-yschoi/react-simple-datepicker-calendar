@@ -18,7 +18,7 @@ const calculateDate = (currentDate: Date) => {
     }
   }
 
-  const currentDates = Array.from(
+  const currentDates = Array.from (
     { length: currentMonthLastDate },
     (_, i) => i + 1
   );
