@@ -1,9 +1,27 @@
 {
-  "name": "@ella-yschoi/datepicker-calendar",
-  "version": "1.0.0",
-  "private": "false",
-  "description": "A Simple and Useful Datepicker Calendar Library for React",
-  "main": "index.js",
+  "name": "react-simple-datepicker",
+  "version": "0.1.0",
+  "description": "A Simple Datepicker Calendar Library for React",
+  "author": "ella-yschoi",
+  "license": "MIT",
+  "keywords": [
+    "react",
+    "datepicker",
+    "calendar",
+    "select",
+    "month",
+    "date"
+  ],
+  "homepage": "https://github.com/ella-yschoi/react-simple-datepicker-calendar#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ella-yschoi/react-simple-datepicker-calendar.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ella-yschoi/react-simple-datepicker-calendar/issues"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "test": "npm test",
     "dev": "vite",
@@ -11,38 +29,17 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/ella-yschoi/datepicker-calendar.git"
-  },
-  "keywords": [
-    "react",
-    "datepicker",
-    "calendar",
-    "ui",
-    "component",
-    "scheduling",
-    "selection",
-    "month",
-    "date",
-    "달력",
-    "날짜"
+  "files": [
+    "dist",
+    "src",
+    "tsconfig.json"
   ],
-  "author": "ella-yschoi",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/ella-yschoi/datepicker-calendar/issues"
-  },
-  "homepage": "https://github.com/ella-yschoi/datepicker-calendar#readme",
-  "peerDependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
-  },
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "styled-components": "^6.1.8",
-    "styled-reset": "^4.5.2"
+    "styled-reset": "^4.5.2",
+    "vite-plugin-dts": "^3.7.3"
   },
   "devDependencies": {
     "@types/react": "^18.2.56",
@@ -53,7 +50,11 @@
     "eslint": "^8.56.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.5",
-    "typescript": "^5.2.2",
+    "typescript": "^5.4.2",
     "vite": "^5.1.4"
+  },
+  "peerDependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   }
 }
