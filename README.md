@@ -1,12 +1,6 @@
 # 📅 Simple DatePicker Calendar for React
 
-A simple date picker library for React.
-
-<br/>
-
-## Overview
-
-Simple Datepicker is a date picker component for [React](https://react.dev/). Select dates easily and customize the color scheme to fit your design needs. It will continually evolving to offer a variety of designs.
+<p align="left" width="100%"><a href="https://www.npmjs.com/package/react-simple-datepicker-calendar"><img width="1000" alt="react-simple-datepicker-calendar" src="https://github.com/ella-yschoi/react-simple-datepicker-calendar/assets/123397411/22d674d8-8ff5-41b5-b8fd-ae17ae063817"></a>
 
 <br/>
 
