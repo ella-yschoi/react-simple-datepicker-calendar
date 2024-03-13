@@ -12,7 +12,23 @@ import calculateDate from '../utils/calculateDate';
 import handleDateSelect from '../utils/handleDate';
 import { isToday, isSelected } from '../utils/selectDate';
 
-const Calendar: React.FC = () => {
+interface CalendarProps {
+  calendarBackgroundColor?: string;
+  displayBackgroundColor?: string;
+  displayFontColor?: string;
+  dayFontColor: string;
+  currentDateFontColor: string;
+  prevNextDateFontColor: string;
+}
+
+const Calendar: React.FC<CalendarProps> = ({
+  calendarBackgroundColor,
+  displayBackgroundColor,
+  displayFontColor,
+  dayFontColor,
+  currentDateFontColor,
+  prevNextDateFontColor,
+}) => {
   const [dateInput, setDateInput] = useState('');
   const [displayDate, setDisplayDate] = useState('');
   const [$isInputValid, setIsInputValid] = useState(true);
@@ -28,8 +44,12 @@ const Calendar: React.FC = () => {
 
   return (
     <>
-      <SelectedDateDisplay displayDate={displayDate} />
-      <CalendarContainer>
+      <SelectedDateDisplay
+        displayDate={displayDate}
+        $displayBackgroundColor={displayBackgroundColor}
+        $displayFontColor={displayFontColor}
+      />
+      <CalendarContainer $calendarBackgroundColor={calendarBackgroundColor}>
         <CalendarInput
           dateInput={dateInput}
           setDateInput={setDateInput}
@@ -51,7 +71,7 @@ const Calendar: React.FC = () => {
             setCurrentDate={setCurrentDate}
           />
         </HeaderContainer>
-        <DayGrid />
+        <DayGrid dayFontColor={dayFontColor}/>
         <DateGrid
           prevMonthDays={prevMonthDays}
           currentMonthDays={currentMonthDays}
@@ -63,6 +83,8 @@ const Calendar: React.FC = () => {
           }
           currentDate={currentDate}
           selectedDate={new Date(displayDate)}
+          currentDateFontColor={currentDateFontColor}
+          prevNextDateFontColor={prevNextDateFontColor}
         />
       </CalendarContainer>
     </>
