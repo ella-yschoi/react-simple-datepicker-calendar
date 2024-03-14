@@ -1,4 +1,4 @@
-import { StyledDateUnit, StyledExtraDateUnit } from '../../styles/Units.style';
+import { StyledCurrentDateUnit, StyledPrevNextDateUnit } from '../../styles/Units.style';
 
 interface DateUnitProps {
   className?: string;
@@ -8,17 +8,17 @@ interface DateUnitProps {
   $prevNextDateFontColor?: string;
 }
 
-const DateUnit: React.FC<DateUnitProps> = ({ className, onClick, date, $currentDateFontColor }) => (
-  <StyledDateUnit className={className} onClick={onClick} $currentDateFontColor={$currentDateFontColor}>
+const CurrentDateUnit: React.FC<DateUnitProps> = ({ className, onClick, date, $currentDateFontColor }) => (
+  <StyledCurrentDateUnit className={className} onClick={onClick} $currentDateFontColor={$currentDateFontColor}>
     {date}
-  </StyledDateUnit>
+  </StyledCurrentDateUnit>
 );
 
-const ExtraDateUnit: React.FC<DateUnitProps> = ({ className, onClick, date, $prevNextDateFontColor }) => (
-  <StyledExtraDateUnit className={className} onClick={onClick} $prevNextDateFontColor={$prevNextDateFontColor}>
+const PrevNextDateUnit: React.FC<DateUnitProps> = ({ className, onClick, date, $prevNextDateFontColor }) => (
+  <StyledPrevNextDateUnit className={className} onClick={onClick} $prevNextDateFontColor={$prevNextDateFontColor}>
     {date}
-  </StyledExtraDateUnit>
+  </StyledPrevNextDateUnit>
 );
 
 
-export { DateUnit, ExtraDateUnit };
+export { CurrentDateUnit, PrevNextDateUnit };

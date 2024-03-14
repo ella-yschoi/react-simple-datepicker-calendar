@@ -17,6 +17,7 @@ function App() {
   return (
     <>
       <GlobalStyles />
+      {/* Dark */}
       <Calendar
         calendarBackgroundColor={''}
         displayBackgroundColor={''}
@@ -24,6 +25,15 @@ function App() {
         dayFontColor={''}
         currentDateFontColor={''}
         prevNextDateFontColor={''}
+      />
+      {/* Light */}
+      <Calendar
+        calendarBackgroundColor="#ffffff"
+        displayBackgroundColor="#ffffff"
+        displayFontColor="#252525"
+        dayFontColor="#c5c5c5"
+        currentDateFontColor="#252525"
+        prevNextDateFontColor="#c5c5c5"
       />
     </>
   );

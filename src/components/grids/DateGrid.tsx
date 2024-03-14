@@ -1,4 +1,4 @@
-import { DateUnit, ExtraDateUnit } from '../units/DateUnit';
+import { CurrentDateUnit, PrevNextDateUnit } from '../units/DateUnit';
 import { StyledDateGrid } from '../../styles/Grids.style';
 
 type DatesGridProps = {
@@ -33,7 +33,7 @@ const DateGrid: React.FC<DatesGridProps> = ({
 }) => (
   <StyledDateGrid>
     {prevMonthDays.map((date) => (
-      <ExtraDateUnit
+      <PrevNextDateUnit
         key={`prev-${date}`}
         className={
           isSelected(date, -1, currentDate, selectedDate) ? 'selected' : ''
@@ -56,7 +56,7 @@ const DateGrid: React.FC<DatesGridProps> = ({
         : '';
       const className = selectedClass ? selectedClass : todayClass;
       return (
-        <DateUnit
+        <CurrentDateUnit
           key={`current-${date}`}
           className={className}
           $currentDateFontColor={currentDateFontColor}
@@ -72,7 +72,7 @@ const DateGrid: React.FC<DatesGridProps> = ({
       );
     })}
     {nextMonthDays.map((date) => (
-      <ExtraDateUnit
+      <PrevNextDateUnit
         key={`next-${date}`}
         className={
           isSelected(date, -1, currentDate, selectedDate) ? 'selected' : ''
