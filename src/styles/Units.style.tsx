@@ -18,7 +18,7 @@ const StyledDayUnit = styled.div<DateProps>`
   color: ${props => props.$dayFontColor || '#899797'};
 `;
 
-const StyledDateUnit = styled.div<DateProps>`
+const StyledCurrentDateUnit = styled.div<DateProps>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -32,7 +32,7 @@ const StyledDateUnit = styled.div<DateProps>`
 
   &:hover {
     cursor: pointer;
-    background-color: #273241;
+    background-color: transparent;
     border: 1px solid #2383e2;
     border-radius: 20%;
   }
@@ -51,8 +51,8 @@ const StyledDateUnit = styled.div<DateProps>`
   }
 `;
 
-const StyledExtraDateUnit = styled(StyledDateUnit)`
+const StyledPrevNextDateUnit = styled(StyledCurrentDateUnit)<DateProps>`
   color: ${props => props.$prevNextDateFontColor || props.$currentDateFontColor || '#899797'};
 `;
 
-export { StyledDayUnit, StyledDateUnit, StyledExtraDateUnit };
+export { StyledDayUnit, StyledCurrentDateUnit, StyledPrevNextDateUnit };
