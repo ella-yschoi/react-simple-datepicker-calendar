@@ -1,5 +1,7 @@
+import React from 'react';
 import GlobalStyles from './styles/GlobalStyles';
 import Calendar from './components';
+import { CalendarProps } from './types';
 
 /**
  * datepicker-calendar Component Props
@@ -13,30 +15,13 @@ import Calendar from './components';
  * 
  */
 
-function App() {
+const App: React.FC<CalendarProps> = (props) => {
   return (
     <>
       <GlobalStyles />
-      {/* Dark */}
-      <Calendar
-        calendarBackgroundColor={''}
-        displayBackgroundColor={''}
-        displayFontColor={''}
-        dayFontColor={''}
-        currentDateFontColor={''}
-        prevNextDateFontColor={''}
-      />
-      {/* Light */}
-      <Calendar
-        calendarBackgroundColor="#ffffff"
-        displayBackgroundColor="#ffffff"
-        displayFontColor="#252525"
-        dayFontColor="#c5c5c5"
-        currentDateFontColor="#252525"
-        prevNextDateFontColor="#c5c5c5"
-      />
+      <Calendar {...props} />
     </>
   );
-}
+};
 
 export default App;

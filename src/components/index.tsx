@@ -12,14 +12,7 @@ import calculateDate from '../utils/calculateDate';
 import handleDateSelect from '../utils/handleDate';
 import { isToday, isSelected } from '../utils/selectDate';
 
-interface CalendarProps {
-  calendarBackgroundColor?: string;
-  displayBackgroundColor?: string;
-  displayFontColor?: string;
-  dayFontColor: string;
-  currentDateFontColor: string;
-  prevNextDateFontColor: string;
-}
+import { CalendarProps } from '../types';
 
 const Calendar: React.FC<CalendarProps> = ({
   calendarBackgroundColor,
