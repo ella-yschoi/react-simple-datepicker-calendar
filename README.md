@@ -1,8 +1,14 @@
 # Simple DatePicker Calendar for React
 
-<p align="left" width="100%"><a href="https://www.npmjs.com/package/react-simple-datepicker-calendar"><img width="1000" alt="react-simple-datepicker-calendar" src="https://github.com/ella-yschoi/react-simple-datepicker-calendar/assets/123397411/22d674d8-8ff5-41b5-b8fd-ae17ae063817"></a>
+<p align="left" width="100%"><a href="https://www.npmjs.com/package/react-simple-datepicker-calendar"><img width="1000" alt="react-simple-datepicker-calendar" src="https://github.com/ella-yschoi/react-simple-datepicker-calendar/assets/123397411/3ab691ed-36c1-4837-a368-fab725a94196"></a>
 
 <br/>
+<br/>
+
+## Overview
+
+Simple Datepicker is a date picker component for React. Select dates easily and customize the color scheme to fit your design needs. It will continually evolving to offer a variety of designs.
+
 <br/>
 
 ## Features
@@ -40,8 +46,8 @@ function App() {
       displayBackgroundColor="#252525"
       displayFontColor="#c5c5c5"
       dayFontColor="#899797"
-      dateFontColor="#d5d5d5"
-      extraDateFontColor="#899797"
+      currentDateFontColor="#d5d5d5"
+      prevNextDateFontColor="#899797"
     />
   );
 }
