@@ -1,8 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
+import { CalendarProps } from './types';
 
-const calendarProps = {
+const calendarProps: Omit<CalendarProps, 'value' | 'onChange'> = {
   calendarBackgroundColor:'#252525',
   displayBackgroundColor: '#252525',
   displayFontColor: '#c5c5c5',
