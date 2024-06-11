@@ -31,12 +31,14 @@ const Calendar: React.FC<CalendarProps> = ({
 
   const { prevMonthDays, currentMonthDays, nextMonthDays } =
     calculateDate(currentDate);
-    
-  const displayYearMonth = currentDate.toLocaleDateString('en-US', {
+  
+  // e.g. Jun 2024
+  const displayYearMonth = currentDate.toLocaleDateString(language === 'ko' ? 'ko-KR' : 'en-US', {
     year: 'numeric',
     month: 'short'
   });
 
+  // e.g. Su Mo Tu...
   const daysOfWeek = language === 'ko' ? DAYS_OF_WEEK_KO : DAYS_OF_WEEK_EN;
 
   return (
@@ -45,6 +47,7 @@ const Calendar: React.FC<CalendarProps> = ({
         displayDate={displayDate}
         $displayBackgroundColor={displayBackgroundColor}
         $displayFontColor={displayFontColor}
+        language={language}
       />
       <CalendarContainer $calendarBackgroundColor={calendarBackgroundColor}>
         <CalendarInput

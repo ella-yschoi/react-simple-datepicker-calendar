@@ -7,12 +7,15 @@ type SelectedDateDisplayProps = {
   displayDate: string;
   $displayBackgroundColor?: string;
   $displayFontColor?: string;
+  language: string;
 };
 
+// e.g. June 11, 2024
 const SelectedDateDisplay: React.FC<SelectedDateDisplayProps> = ({
   displayDate,
   $displayBackgroundColor,
-  $displayFontColor
+  $displayFontColor,
+  language,
 }) => {
 
   const dateParts = displayDate.split('/').map(part => parseInt(part, 10));
@@ -24,7 +27,7 @@ const SelectedDateDisplay: React.FC<SelectedDateDisplayProps> = ({
 
   let formattedDate = '';
   if (isValidDate) {
-    formattedDate = dateObject.toLocaleDateString('en-US', {
+    formattedDate = dateObject.toLocaleDateString(language === 'ko' ? 'ko-KR' : 'en-US', {
       year: 'numeric',
       month: 'long',
       day: 'numeric'
@@ -36,7 +39,7 @@ const SelectedDateDisplay: React.FC<SelectedDateDisplayProps> = ({
       $displayBackgroundColor={$displayBackgroundColor} 
       $displayFontColor={$displayFontColor}
     >
-      Date : {formattedDate}
+      {formattedDate}
     </StyledSelectedDateDisplay>
   );
 };
