@@ -1,20 +1,19 @@
 import DayUnit from '../units/DayUnit';
 import { StyledDayGrid } from '../../styles/Grids.style';
-import { DAYS_OF_WEEK_EN } from '../../constants/daysOfWeek';
 
 type DayGridProps = {
   dayFontColor?: string;
+  daysOfWeek: string[];
 };
 
-const DayGrid: React.FC<DayGridProps> = ({ dayFontColor }) => {
+const DayGrid: React.FC<DayGridProps> = ({ dayFontColor, daysOfWeek }) => {
   return (
     <StyledDayGrid>
-      {DAYS_OF_WEEK_EN.map((day) => (
+      {daysOfWeek.map((day) => (
         <DayUnit key={day} day={day} $dayFontColor={dayFontColor} />
       ))}
     </StyledDayGrid>
   );
 };
-
 
 export default DayGrid;
