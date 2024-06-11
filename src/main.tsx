@@ -9,6 +9,7 @@ const calendarProps = {
   dayFontColor: '#899797',
   currentDateFontColor: '#d5d5d5',
   prevNextDateFontColor: '#899797',
+  language: 'ko',
 };
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(

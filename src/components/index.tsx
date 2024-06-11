@@ -11,6 +11,7 @@ import DateGrid from './grids/DateGrid';
 import calculateDate from '../utils/calculateDate';
 import handleDateSelect from '../utils/handleDate';
 import { isToday, isSelected } from '../utils/selectDate';
+import { DAYS_OF_WEEK_EN, DAYS_OF_WEEK_KO } from '../constants/daysOfWeek';
 
 import { CalendarProps } from '../types';
 
@@ -21,6 +22,7 @@ const Calendar: React.FC<CalendarProps> = ({
   dayFontColor,
   currentDateFontColor,
   prevNextDateFontColor,
+  language,
 }) => {
   const [dateInput, setDateInput] = useState('');
   const [displayDate, setDisplayDate] = useState('');
@@ -30,10 +32,12 @@ const Calendar: React.FC<CalendarProps> = ({
   const { prevMonthDays, currentMonthDays, nextMonthDays } =
     calculateDate(currentDate);
     
-    const displayYearMonth = currentDate.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short'
-    });
+  const displayYearMonth = currentDate.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'short'
+  });
+
+  const daysOfWeek = language === 'ko' ? DAYS_OF_WEEK_KO : DAYS_OF_WEEK_EN;
 
   return (
     <>
@@ -64,7 +68,10 @@ const Calendar: React.FC<CalendarProps> = ({
             setCurrentDate={setCurrentDate}
           />
         </HeaderContainer>
-        <DayGrid dayFontColor={dayFontColor}/>
+        <DayGrid
+          dayFontColor={dayFontColor}
+          daysOfWeek={daysOfWeek}
+        />
         <DateGrid
           prevMonthDays={prevMonthDays}
           currentMonthDays={currentMonthDays}

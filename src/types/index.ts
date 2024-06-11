@@ -5,4 +5,5 @@ export interface CalendarProps {
   dayFontColor: string;
   currentDateFontColor: string;
   prevNextDateFontColor: string;
+  language: string;
 }
