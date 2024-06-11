@@ -48,6 +48,7 @@ function App() {
       dayFontColor="#899797"
       currentDateFontColor="#d5d5d5"
       prevNextDateFontColor="#899797"
+      language="en"
     />
   );
 }
@@ -65,12 +66,13 @@ function App() {
 | dayFontColor             | string             | Font color for the day names (e.g., Sun, Mon) in the calendar.                    | '#899797'    |
 | currentDateFontColor     | string             | Font color for the current date in the calendar.                                  | '#d5d5d5'    |
 | prevNextDateFontColor    | string             | Font color for the dates of the previous and next month.                          | '#899797'    |
+| language                 | 'en'\|'ko'         | Supported values are 'en' for English and 'ko' for Korean.                        |     'en'     |
 
 <br/>
 
 ## Planned Updates
 
-**Enhance Customization**: Further customization options are in development. You'll soon be able to tailor the calendar to your preferences, including date format, language, start day, and more.
+**Enhance Customization**: Further customization options are in development. You'll soon be able to tailor the calendar to your preferences, including date format, start day, and more.
 
 <br/>
 
