@@ -13,7 +13,7 @@ const calendarProps: Omit<CalendarProps, 'value' | 'onChange'> = {
   language: 'en',
 };
 
-ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
+ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <App {...calendarProps} />
   </React.StrictMode>

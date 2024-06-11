@@ -17,8 +17,8 @@ const CalendarInput: React.FC<CalendarInputProps> = ({
   return (
     <>
       <StyledCalendarInput
-        type="text"
-        id="date"
+        type='text'
+        id='date'
         value={dateInput}
         onChange={onChange}
         onKeyDown={onKeyDown}
