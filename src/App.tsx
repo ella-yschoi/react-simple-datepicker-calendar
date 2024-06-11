@@ -13,7 +13,7 @@ import { CalendarProps } from './types';
  * @property {string} [prevNextDateFontColor] - Font color for the dates of the previous and next month. (optional)
  * @property {string} [language] - Language settings for the calendar. Supported values are 'en' for English and 'ko' for Korean. (optional)
  * @property {Date} value - The currently selected date.
- * @property {(newDate: Date) => void} onChange - Function to call when the date is changed.
+ * @property {function} onChange - Function to call when the date is changed.
  */
 
 const App: React.FC<Omit<CalendarProps, 'value' | 'onChange'>> = (props) => {

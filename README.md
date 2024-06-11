@@ -36,10 +36,16 @@ npm install react-simple-datepicker-calendar
 ## Usage
 
 ```jsx
-import React from 'react';
+import React, { useState } from 'react';
 import { Calendar } from 'react-simple-datepicker-calendar';
 
 function App() {
+  const [selectedDate, setSelectedDate] = useState(new Date());
+
+  const handleDateChange = (newDate) => {
+    setSelectedDate(newDate);
+  };
+
   return (
     <Calendar
       calendarBackgroundColor="#252525"
@@ -49,6 +55,8 @@ function App() {
       currentDateFontColor="#d5d5d5"
       prevNextDateFontColor="#899797"
       language="en"
+      value={selectedDate}
+      onChange={handleDateChange}
     />
   );
 }
@@ -58,15 +66,17 @@ function App() {
 
 ## Props
 
-| Prop Name                | Type               | Description                                                                       | Default      |
-| ------------------------ | ------------------ | --------------------------------------------------------------------------------- | ------------ |
-| calendarBackgroundColor  | string             | Background color of the entire calendar component.                                | '#252525'    |
-| displayBackgroundColor   | string             | Background color for the display area (e.g., month and year display).             | '#252525'    |
-| displayFontColor         | string             | Font color for the display area, such as the selected date and year-month header. | '#c5c5c5'    |
-| dayFontColor             | string             | Font color for the day names (e.g., Sun, Mon) in the calendar.                    | '#899797'    |
-| currentDateFontColor     | string             | Font color for the current date in the calendar.                                  | '#d5d5d5'    |
-| prevNextDateFontColor    | string             | Font color for the dates of the previous and next month.                          | '#899797'    |
-| language                 | 'en'\|'ko'         | Supported values are 'en' for English and 'ko' for Korean.                        |     'en'     |
+| Prop Name                | Type                     | Description                                                                       | Default      |
+| ------------------------ | ------------------------ | --------------------------------------------------------------------------------- | ------------ |
+| calendarBackgroundColor  | string                   | Background color of the entire calendar component.                                | '#252525'    |
+| displayBackgroundColor   | string                   | Background color for the display area (e.g., month and year display).             | '#252525'    |
+| displayFontColor         | string                   | Font color for the display area, such as the selected date and year-month header. | '#c5c5c5'    |
+| dayFontColor             | string                   | Font color for the day names (e.g., Sun, Mon) in the calendar.                    | '#899797'    |
+| currentDateFontColor     | string                   | Font color for the current date in the calendar.                                  | '#d5d5d5'    |
+| prevNextDateFontColor    | string                   | Font color for the dates of the previous and next month.                          | '#899797'    |
+| language                 | 'en'\|'ko'               | Supported values are 'en' for English and 'ko' for Korean.                        |     'en'     |
+| value                    | Date                     | The currently selected date.                                                      |              |
+| onChange                 | (newDate: Date) => void  | Function to call when the date is changed.                                        |              |
 
 <br/>
 
