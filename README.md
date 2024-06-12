@@ -36,7 +36,7 @@ npm install react-simple-datepicker-calendar
 ## Usage
 
 ```jsx
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Calendar } from 'react-simple-datepicker-calendar';
 
 function App() {
@@ -60,6 +60,8 @@ function App() {
     />
   );
 }
+
+export default App;
 ```
 
 <br/>
@@ -76,7 +78,7 @@ function App() {
 | prevNextDateFontColor    | string                   | Font color for the dates of the previous and next month.                          | '#899797'    |
 | language                 | 'en'\|'ko'               | Supported values are 'en' for English and 'ko' for Korean.                        |     'en'     |
 | value                    | Date                     | The currently selected date.                                                      |              |
-| onChange                 | (newDate: Date) => void  | Function to call when the date is changed.                                        |              |
+| onChange                 | (newDate: Date) => void  | Language settings for the calendar. Function to call when the date is changed.    |              |
 
 <br/>
 
