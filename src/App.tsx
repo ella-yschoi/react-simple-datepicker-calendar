@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState } from 'react';
 import GlobalStyles from './styles/GlobalStyles';
 import Calendar from './components';
 import { CalendarProps } from './types';
@@ -12,13 +12,25 @@ import { CalendarProps } from './types';
  * @property {string} [currentDateFontColor] - Font color for the current date in the calendar. (optional)
  * @property {string} [prevNextDateFontColor] - Font color for the dates of the previous and next month. (optional)
  * @property {string} [language] - Language settings for the calendar. Supported values are 'en' for English and 'ko' for Korean. (optional)
+ * @property {Date} value - The currently selected date.
+ * @property {function} onChange - Function to call when the date is changed.
  */
 
-const App: React.FC<CalendarProps> = (props) => {
+const App: React.FC<Omit<CalendarProps, 'value' | 'onChange'>> = (props) => {
+  const [selectedDate, setSelectedDate] = useState(new Date());
+
+  const handleDateChange = (newDate: Date) => {
+    setSelectedDate(newDate);
+  };
+
   return (
     <>
       <GlobalStyles />
-      <Calendar {...props} />
+      <Calendar
+        {...props}
+        value={selectedDate}
+        onChange={handleDateChange}
+      />
     </>
   );
 };

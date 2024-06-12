@@ -1,5 +1,4 @@
-import { useState } from 'react';
-
+import React from 'react';
 import CalendarContainer from './containers/CalendarContainer';
 import HeaderContainer from './containers/HeaderContainer';
 import CalendarInput from './inputs/Inputs';
@@ -13,6 +12,7 @@ import handleDateSelect from '../utils/handleDate';
 import { isToday, isSelected } from '../utils/selectDate';
 import { DAYS_OF_WEEK_EN, DAYS_OF_WEEK_KO } from '../constants/daysOfWeek';
 
+import useCalendar from '../hooks/useCalendar';
 import { CalendarProps } from '../types';
 
 const Calendar: React.FC<CalendarProps> = ({
@@ -23,23 +23,34 @@ const Calendar: React.FC<CalendarProps> = ({
   currentDateFontColor,
   prevNextDateFontColor,
   language,
+  value,
+  onChange
 }) => {
-  const [dateInput, setDateInput] = useState('');
-  const [displayDate, setDisplayDate] = useState('');
-  const [$isInputValid, setIsInputValid] = useState(true);
-  const [currentDate, setCurrentDate] = useState(new Date());
+  const {
+    dateInput,
+    setDateInput,
+    displayDate,
+    isInputValid,
+    currentDate,
+    handleDateChange,
+    handleKeyDown,
+    setCurrentDate,
+    setDisplayDate,
+  } = useCalendar(value);
 
-  const { prevMonthDays, currentMonthDays, nextMonthDays } =
-    calculateDate(currentDate);
+  const { prevMonthDays, currentMonthDays, nextMonthDays } = calculateDate(currentDate);
   
-  // e.g. Jun 2024
   const displayYearMonth = currentDate.toLocaleDateString(language === 'ko' ? 'ko-KR' : 'en-US', {
     year: 'numeric',
     month: 'short'
   });
 
-  // e.g. Su Mo Tu...
   const daysOfWeek = language === 'ko' ? DAYS_OF_WEEK_KO : DAYS_OF_WEEK_EN;
+
+  const handleDateClick = (year: number, month: number, day: number) => {
+    handleDateSelect(year, month, day, setCurrentDate, setDisplayDate, setDateInput);
+    onChange(new Date(year, month - 1, day));
+  };
 
   return (
     <>
@@ -52,12 +63,9 @@ const Calendar: React.FC<CalendarProps> = ({
       <CalendarContainer $calendarBackgroundColor={calendarBackgroundColor}>
         <CalendarInput
           dateInput={dateInput}
-          setDateInput={setDateInput}
-          displayDate={displayDate}
-          setDisplayDate={setDisplayDate}
-          setIsInputValid={setIsInputValid}
-          setCurrentDate={setCurrentDate}
-          $isInputValid={$isInputValid}
+          onChange={handleDateChange}
+          onKeyDown={handleKeyDown}
+          $isInputValid={isInputValid}
         />
         <HeaderContainer>
           <YearMonthDisplay displayYearMonth={displayYearMonth} />
@@ -81,9 +89,7 @@ const Calendar: React.FC<CalendarProps> = ({
           nextMonthDays={nextMonthDays}
           isToday={isToday}
           isSelected={isSelected}
-          handleDateSelect={(year, month, day) => 
-            handleDateSelect(year, month, day, setCurrentDate, setDisplayDate, setDateInput)
-          }
+          handleDateSelect={handleDateClick}
           currentDate={currentDate}
           selectedDate={new Date(displayDate)}
           currentDateFontColor={currentDateFontColor}

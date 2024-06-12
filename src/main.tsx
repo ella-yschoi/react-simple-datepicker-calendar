@@ -1,8 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
+import { CalendarProps } from './types';
 
-const calendarProps = {
+const calendarProps: Omit<CalendarProps, 'value' | 'onChange'> = {
   calendarBackgroundColor:'#252525',
   displayBackgroundColor: '#252525',
   displayFontColor: '#c5c5c5',
@@ -12,7 +13,7 @@ const calendarProps = {
   language: 'en',
 };
 
-ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
+ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <App {...calendarProps} />
   </React.StrictMode>
