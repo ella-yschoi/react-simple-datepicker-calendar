@@ -42,7 +42,7 @@ import { Calendar } from 'react-simple-datepicker-calendar';
 function App() {
   const [selectedDate, setSelectedDate] = useState(new Date());
 
-  const handleDateChange = (newDate) => {
+  const handleDateChange = (newDate: Date) => {
     setSelectedDate(newDate);
   };
 

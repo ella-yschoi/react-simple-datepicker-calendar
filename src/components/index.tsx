@@ -16,15 +16,15 @@ import useCalendar from '../hooks/useCalendar';
 import { CalendarProps } from '../types';
 
 const Calendar: React.FC<CalendarProps> = ({
-  calendarBackgroundColor,
-  displayBackgroundColor,
-  displayFontColor,
-  dayFontColor,
-  currentDateFontColor,
-  prevNextDateFontColor,
-  language,
-  value,
-  onChange
+  calendarBackgroundColor = '#252525',
+  displayBackgroundColor = '#252525',
+  displayFontColor = '#c5c5c5',
+  dayFontColor = '#899797',
+  currentDateFontColor = '#d5d5d5',
+  prevNextDateFontColor = '#899797',
+  language = 'en',
+  value = new Date(),
+  onChange = () => {},
 }) => {
   const {
     dateInput,
@@ -39,7 +39,7 @@ const Calendar: React.FC<CalendarProps> = ({
   } = useCalendar(value);
 
   const { prevMonthDays, currentMonthDays, nextMonthDays } = calculateDate(currentDate);
-  
+
   const displayYearMonth = currentDate.toLocaleDateString(language === 'ko' ? 'ko-KR' : 'en-US', {
     year: 'numeric',
     month: 'short'
