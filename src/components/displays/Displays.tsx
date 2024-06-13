@@ -7,7 +7,7 @@ type SelectedDateDisplayProps = {
   displayDate: string;
   $displayBackgroundColor?: string;
   $displayFontColor?: string;
-  language: string;
+  language?: 'en'|'ko';
 };
 
 // e.g. June 11, 2024
