@@ -3,7 +3,7 @@ import CalendarContainer from './containers/CalendarContainer';
 import HeaderContainer from './containers/HeaderContainer';
 import CalendarInput from './inputs/Inputs';
 import { SelectedDateDisplay, YearMonthDisplay } from './displays/Displays';
-import { LeftButton, TodayButton, RightButton } from './buttons/Butttons';
+import { LeftButton, TodayButton, RightButton } from './buttons/Buttons';
 import DayGrid from './grids/DayGrid';
 import DateGrid from './grids/DateGrid';
 
