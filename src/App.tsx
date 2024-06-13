@@ -16,7 +16,7 @@ import useAppLogic from './hooks/useAppLogic';
  * @property {function} onChange - Function to call when the date is changed.
  */
 
-const App: React.FC<Omit<CalendarProps, 'value' | 'onChange'>> = (props) => {
+const App: React.FC<CalendarProps> = (props) => {
   const { selectedDate, handleDateChange } = useAppLogic();
 
   return (
