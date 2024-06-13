@@ -23,8 +23,8 @@ const Calendar: React.FC<CalendarProps> = ({
   currentDateFontColor = '#d5d5d5',
   prevNextDateFontColor = '#899797',
   language = 'en',
-  value = new Date(),
-  onChange = () => {},
+  value,
+  onChange,
 }) => {
   const {
     dateInput,

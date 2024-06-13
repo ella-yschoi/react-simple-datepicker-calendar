@@ -6,6 +6,6 @@ export interface CalendarProps {
   currentDateFontColor?: string;
   prevNextDateFontColor?: string;
   language?: 'en'|'ko';
-  value?: Date;
-  onChange?: (newDate: Date) => void;
+  value: Date;
+  onChange: (newDate: Date) => void;
 }
