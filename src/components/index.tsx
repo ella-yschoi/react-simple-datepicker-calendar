@@ -11,9 +11,8 @@ import calculateDate from '../utils/calculateDate';
 import handleDateSelect from '../utils/handleDate';
 import { isToday, isSelected } from '../utils/selectDate';
 import { DAYS_OF_WEEK_EN, DAYS_OF_WEEK_KO } from '../constants/daysOfWeek';
-
-import useCalendar from '../hooks/useCalendar';
 import { CalendarProps } from '../types';
+import { useCalendarContext } from '../context/CalendarContext';
 
 const Calendar: React.FC<CalendarProps> = ({
   calendarBackgroundColor = '#252525',
@@ -23,7 +22,6 @@ const Calendar: React.FC<CalendarProps> = ({
   currentDateFontColor = '#d5d5d5',
   prevNextDateFontColor = '#899797',
   language = 'en',
-  value,
   onChange,
 }) => {
   const {
@@ -36,7 +34,7 @@ const Calendar: React.FC<CalendarProps> = ({
     handleKeyDown,
     setCurrentDate,
     setDisplayDate,
-  } = useCalendar(value);
+  } = useCalendarContext();
 
   const { prevMonthDays, currentMonthDays, nextMonthDays } = calculateDate(currentDate);
 

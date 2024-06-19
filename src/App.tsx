@@ -2,6 +2,7 @@ import GlobalStyles from './styles/GlobalStyles';
 import Calendar from './components';
 import { CalendarProps } from './types';
 import useAppLogic from './hooks/useAppLogic';
+import { CalendarProvider } from './context/CalendarContext';
 
 /**
  * datepicker-calendar Component Props
@@ -20,14 +21,13 @@ const App: React.FC<CalendarProps> = (props) => {
   const { selectedDate, handleDateChange } = useAppLogic();
 
   return (
-    <>
+    <CalendarProvider value={selectedDate}>
       <GlobalStyles />
       <Calendar
         {...props}
-        value={selectedDate}
         onChange={handleDateChange}
       />
-    </>
+    </CalendarProvider>
   );
 };
 
