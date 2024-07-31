@@ -1,6 +1,19 @@
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 
-const useCalendar = (initialDate: Date) => {
+export interface CalendarState {
+  dateInput: string;
+  setDateInput: Dispatch<SetStateAction<string>>;
+  displayDate: string;
+  setDisplayDate: Dispatch<SetStateAction<string>>;
+  isInputValid: boolean;
+  setIsInputValid: Dispatch<SetStateAction<boolean>>;
+  currentDate: Date;
+  setCurrentDate: Dispatch<SetStateAction<Date>>;
+  handleDateChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  handleKeyDown: (event: React.KeyboardEvent<HTMLInputElement>) => void;
+}
+
+const useCalendar = (initialDate: Date): CalendarState => {
   const [dateInput, setDateInput] = useState('');
   const [displayDate, setDisplayDate] = useState('');
   const [isInputValid, setIsInputValid] = useState(true);
@@ -41,15 +54,15 @@ const useCalendar = (initialDate: Date) => {
 
   return {
     dateInput,
+    setDateInput,
     displayDate,
+    setDisplayDate,
     isInputValid,
+    setIsInputValid,
     currentDate,
+    setCurrentDate,
     handleDateChange,
     handleKeyDown,
-    setDisplayDate,
-    setDateInput,
-    setIsInputValid,
-    setCurrentDate,
   };
 };
 
