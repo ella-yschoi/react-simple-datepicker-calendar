@@ -11,15 +11,43 @@ type ButtonProps = {
 
 const LeftButton: React.FC<ButtonProps> = ({ setCurrentDate, currentDate }) => {
   const handlePreviousMonth = () => {
-    if (currentDate) {
-      // currentDate가 정의되어 있으면 해당 로직을 실행
-      setCurrentDate(
-        new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1)
-      );
+    const safeCurrentDate = currentDate || new Date();
+    setCurrentDate(
+      new Date(safeCurrentDate.getFullYear(), safeCurrentDate.getMonth() - 1, 1)
+    );
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      handlePreviousMonth();
     }
   };
 
-  return <StyledLeftButton onClick={handlePreviousMonth} />;
+  const getAriaLabel = () => {
+    const safeCurrentDate = currentDate || new Date();
+    const previousMonth = new Date(
+      safeCurrentDate.getFullYear(),
+      safeCurrentDate.getMonth() - 1,
+      1
+    );
+    const monthName = previousMonth.toLocaleDateString('en-US', {
+      month: 'long',
+      year: 'numeric',
+    });
+    return `Go to previous month: ${monthName}`;
+  };
+
+  return (
+    <StyledLeftButton
+      onClick={handlePreviousMonth}
+      onKeyDown={handleKeyDown}
+      role='button'
+      tabIndex={0}
+      aria-label={getAriaLabel()}
+      aria-controls='calendar-grid'
+    />
+  );
 };
 
 const TodayButton: React.FC<ButtonProps> = ({ setCurrentDate }) => {
@@ -27,7 +55,31 @@ const TodayButton: React.FC<ButtonProps> = ({ setCurrentDate }) => {
     setCurrentDate(new Date());
   };
 
-  return <StyledTodayButton onClick={handleToday} />;
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      handleToday();
+    }
+  };
+
+  const today = new Date();
+  const todayLabel = today.toLocaleDateString('en-US', {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+
+  return (
+    <StyledTodayButton
+      onClick={handleToday}
+      onKeyDown={handleKeyDown}
+      role='button'
+      tabIndex={0}
+      aria-label={`Go to today: ${todayLabel}`}
+      aria-controls='calendar-grid'
+    />
+  );
 };
 
 const RightButton: React.FC<ButtonProps> = ({
@@ -35,14 +87,43 @@ const RightButton: React.FC<ButtonProps> = ({
   currentDate,
 }) => {
   const handleNextMonth = () => {
-    if (currentDate) {
-      setCurrentDate(
-        new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1)
-      );
+    const safeCurrentDate = currentDate || new Date();
+    setCurrentDate(
+      new Date(safeCurrentDate.getFullYear(), safeCurrentDate.getMonth() + 1, 1)
+    );
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      handleNextMonth();
     }
   };
 
-  return <StyledRightButton onClick={handleNextMonth} />;
+  const getAriaLabel = () => {
+    const safeCurrentDate = currentDate || new Date();
+    const nextMonth = new Date(
+      safeCurrentDate.getFullYear(),
+      safeCurrentDate.getMonth() + 1,
+      1
+    );
+    const monthName = nextMonth.toLocaleDateString('en-US', {
+      month: 'long',
+      year: 'numeric',
+    });
+    return `Go to next month: ${monthName}`;
+  };
+
+  return (
+    <StyledRightButton
+      onClick={handleNextMonth}
+      onKeyDown={handleKeyDown}
+      role='button'
+      tabIndex={0}
+      aria-label={getAriaLabel()}
+      aria-controls='calendar-grid'
+    />
+  );
 };
 
 export { LeftButton, TodayButton, RightButton };

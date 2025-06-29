@@ -4,48 +4,96 @@ import {
 } from '../../styles/Displays.style';
 
 type SelectedDateDisplayProps = {
-  displayDate: string;
-  $displayBackgroundColor?: string;
-  $displayFontColor?: string;
-  language?: 'en'|'ko';
+  selectedDate: Date;
+  displayBackgroundColor?: string;
+  displayFontColor?: string;
 };
 
-// e.g. June 11, 2024
+type YearMonthDisplayProps = {
+  currentDate: Date;
+  dayFontColor?: string;
+};
+
+// Screen reader announcements component
+const LiveRegion: React.FC<{ announcement: string }> = ({ announcement }) => (
+  <div
+    aria-live='polite'
+    aria-atomic='true'
+    className='sr-only'
+    style={{
+      position: 'absolute',
+      left: '-10000px',
+      width: '1px',
+      height: '1px',
+      overflow: 'hidden',
+    }}
+  >
+    {announcement}
+  </div>
+);
+
 const SelectedDateDisplay: React.FC<SelectedDateDisplayProps> = ({
-  displayDate,
-  $displayBackgroundColor,
-  $displayFontColor,
-  language,
+  selectedDate,
+  displayBackgroundColor,
+  displayFontColor,
 }) => {
+  const safeDate = selectedDate || new Date();
 
-  const dateParts = displayDate.split('/').map(part => parseInt(part, 10));
-  const dateObject = displayDate
-    ? new Date(dateParts[0], dateParts[1] - 1, dateParts[2])
-    : null;
-
-  const isValidDate = dateObject && !isNaN(dateObject.getTime());
-
-  let formattedDate = '';
-  if (isValidDate) {
-    formattedDate = dateObject.toLocaleDateString(language === 'ko' ? 'ko-KR' : 'en-US', {
+  const formatSelectedDate = (date: Date) => {
+    return date.toLocaleDateString('en-US', {
+      weekday: 'long',
       year: 'numeric',
       month: 'long',
-      day: 'numeric'
+      day: 'numeric',
     });
-  }
+  };
+
+  const selectedDateText = formatSelectedDate(safeDate);
 
   return (
-    <StyledSelectedDateDisplay 
-      $displayBackgroundColor={$displayBackgroundColor} 
-      $displayFontColor={$displayFontColor}
-    >
-      {formattedDate}
-    </StyledSelectedDateDisplay>
+    <>
+      <StyledSelectedDateDisplay
+        $displayBackgroundColor={displayBackgroundColor}
+        $displayFontColor={displayFontColor}
+        role='status'
+        aria-label={`Selected date: ${selectedDateText}`}
+      >
+        {safeDate.toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+        })}
+      </StyledSelectedDateDisplay>
+      <LiveRegion announcement={`Date selected: ${selectedDateText}`} />
+    </>
   );
 };
 
-const YearMonthDisplay: React.FC<{ displayYearMonth: string }> = ({
-  displayYearMonth,
-}) => <StyledYearMonthDisplay>{displayYearMonth}</StyledYearMonthDisplay>;
+const YearMonthDisplay: React.FC<YearMonthDisplayProps> = ({
+  currentDate,
+  dayFontColor,
+}) => {
+  const safeDate = currentDate || new Date();
 
-export { SelectedDateDisplay, YearMonthDisplay };
+  const formatYearMonth = (date: Date) => {
+    return date.toLocaleDateString('en-US', {
+      month: 'long',
+      year: 'numeric',
+    });
+  };
+
+  const yearMonthText = formatYearMonth(safeDate);
+
+  return (
+    <StyledYearMonthDisplay
+      $dayFontColor={dayFontColor}
+      role='heading'
+      aria-level={2}
+      aria-label={`Current month and year: ${yearMonthText}`}
+    >
+      {yearMonthText}
+    </StyledYearMonthDisplay>
+  );
+};
+
+export { SelectedDateDisplay, YearMonthDisplay, LiveRegion };
