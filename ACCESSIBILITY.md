@@ -1,82 +1,82 @@
 # Calendar Accessibility Guide
 
-## WCAG 2.1 AA 준수 상태
+## WCAG 2.1 AA Compliance Status
 
-이 캘린더 컴포넌트는 WCAG 2.1 AA 가이드라인을 준수하도록 설계되었습니다.
+This calendar component is designed to comply with WCAG 2.1 AA guidelines.
 
-## 🎯 접근성 기능
+## 🎯 Accessibility Features
 
-### 1. 키보드 네비게이션
+### 1. Keyboard Navigation
 
-#### 날짜 선택
+#### Date Selection
 
-- **Tab**: 포커스 가능한 요소 간 이동
-- **화살표 키**: 날짜 간 이동
-  - `←` `→`: 좌우 이동
-  - `↑` `↓`: 상하 이동 (7일 단위)
-- **Home/End**: 첫 번째/마지막 날짜로 이동
-- **Enter/Space**: 날짜 선택
+- **Tab**: Navigate between focusable elements
+- **Arrow Keys**: Navigate between dates
+  - `←` `→`: Left/right movement
+  - `↑` `↓`: Up/down movement (7-day intervals)
+- **Home/End**: Move to first/last date
+- **Enter/Space**: Select date
 
-#### 월 네비게이션
+#### Month Navigation
 
-- **Tab**: 버튼 간 이동
-- **Enter/Space**: 이전/다음 월 이동
-- **Enter/Space**: 오늘 날짜로 이동
+- **Tab**: Navigate between buttons
+- **Enter/Space**: Navigate to previous/next month
+- **Enter/Space**: Navigate to today's date
 
-### 2. 스크린 리더 지원
+### 2. Screen Reader Support
 
-#### ARIA 속성
+#### ARIA Attributes
 
-- `role="application"`: 캘린더 컨테이너
-- `role="grid"`: 날짜 그리드
-- `role="button"`: 날짜 및 네비게이션 버튼
-- `role="heading"`: 월/년 표시
-- `role="status"`: 선택된 날짜 표시
+- `role="application"`: Calendar container
+- `role="grid"`: Date grid
+- `role="button"`: Date and navigation buttons
+- `role="heading"`: Month/year display
+- `role="status"`: Selected date display
 
-#### 라이브 리전
+#### Live Regions
 
-- `aria-live="polite"`: 날짜 선택 시 자동 알림
-- `aria-atomic="true"`: 전체 메시지 읽기
+- `aria-live="polite"`: Automatic announcement when date is selected
+- `aria-atomic="true"`: Read entire message
 
-#### 상태 표시
+#### Status Indicators
 
-- `aria-selected="true"`: 선택된 날짜
-- `aria-current="date"`: 오늘 날짜
-- `aria-disabled="true"`: 비활성화된 날짜
+- `aria-selected="true"`: Selected date
+- `aria-current="date"`: Today's date
+- `aria-disabled="true"`: Disabled date
 
-### 3. 시각적 접근성
+### 3. Visual Accessibility
 
-#### 포커스 표시
+#### Focus Indicators
 
-- 명확한 포커스 아웃라인 (2px solid #2383e2)
-- 포커스 오프셋으로 가시성 향상
+- Clear focus outline (2px solid #2383e2)
+- Enhanced visibility with focus offset
 
-#### 고대비 모드 지원
+#### High Contrast Mode Support
 
 ```css
 @media (prefers-contrast: high) {
-  /* 고대비 모드에서 강화된 테두리와 배경 */
+  /* Enhanced borders and backgrounds in high contrast mode */
 }
 ```
 
-#### 모션 감소 지원
+#### Reduced Motion Support
 
 ```css
 @media (prefers-reduced-motion: reduce) {
-  /* 애니메이션 비활성화 */
+  /* Disable animations */
 }
 ```
 
-### 4. 터치 접근성
+### 4. Touch Accessibility
 
-#### 터치 타겟 크기
+#### Touch Target Size
 
-- 모바일에서 최소 44px × 44px
-- 충분한 터치 영역 보장
+- Minimum 44px × 44px on mobile
+- Ensures sufficient touch area
 
-## 🔧 사용법
+## 🔧 Usage
 
-### 기본 사용법
+### Basic Usage
 
 ```tsx
 import { Calendar } from 'react-simple-datepicker-calendar';
@@ -88,13 +88,13 @@ function App() {
     <Calendar
       value={selectedDate}
       onChange={setSelectedDate}
-      // 접근성 속성은 자동으로 적용됩니다
+      // Accessibility attributes are automatically applied
     />
   );
 }
 ```
 
-### 접근성 훅 사용
+### Using Accessibility Hook
 
 ```tsx
 import { useAccessibility } from './hooks/useAccessibility';
@@ -103,20 +103,20 @@ function CalendarComponent() {
   const { calendarRef, announce, validateAccessibility } = useAccessibility({
     onDateSelect: (date) => {
       console.log('Date selected:', date);
-      announce(`날짜가 선택되었습니다: ${date.toLocaleDateString()}`);
+      announce(`Date selected: ${date.toLocaleDateString()}`);
     },
   });
 
-  return <div ref={calendarRef}>{/* 캘린더 컴포넌트 */}</div>;
+  return <div ref={calendarRef}>{/* Calendar component */}</div>;
 }
 ```
 
-### 접근성 테스트
+### Accessibility Testing
 
 ```tsx
 import { testCalendarAccessibility } from './utils/accessibilityTest';
 
-// 컴포넌트 마운트 후 테스트 실행
+// Run test after component mounts
 useEffect(() => {
   const calendarElement = document.querySelector('[role="application"]');
   if (calendarElement) {
@@ -126,94 +126,94 @@ useEffect(() => {
 }, []);
 ```
 
-## 🧪 접근성 테스트
+## 🧪 Accessibility Testing
 
-### 자동화된 테스트
+### Automated Testing
 
 ```bash
-# 접근성 테스트 실행
+# Run accessibility tests
 npm run test:accessibility
 
-# 색상 대비 테스트
+# Color contrast tests
 npm run test:contrast
 
-# 키보드 네비게이션 테스트
+# Keyboard navigation tests
 npm run test:keyboard
 ```
 
-### 수동 테스트 체크리스트
+### Manual Testing Checklist
 
-#### 키보드 네비게이션
+#### Keyboard Navigation
 
-- [ ] Tab으로 모든 인터랙티브 요소에 접근 가능
-- [ ] 화살표 키로 날짜 간 이동 가능
-- [ ] Enter/Space로 날짜 선택 가능
-- [ ] 포커스 표시가 명확함
+- [ ] Can access all interactive elements with Tab
+- [ ] Can navigate between dates with arrow keys
+- [ ] Can select dates with Enter/Space
+- [ ] Focus indicators are clear
 
-#### 스크린 리더
+#### Screen Reader
 
-- [ ] 모든 버튼에 적절한 aria-label
-- [ ] 날짜 선택 시 알림 메시지
-- [ ] 현재 선택된 날짜 상태 표시
-- [ ] 오늘 날짜 식별 가능
+- [ ] All buttons have appropriate aria-label
+- [ ] Announcement message when date is selected
+- [ ] Current selected date status is displayed
+- [ ] Today's date is identifiable
 
-#### 시각적 접근성
+#### Visual Accessibility
 
-- [ ] 고대비 모드에서 가독성 확보
-- [ ] 색상만으로 정보 전달하지 않음
-- [ ] 충분한 색상 대비 (4.5:1 이상)
+- [ ] Readability ensured in high contrast mode
+- [ ] Information is not conveyed by color alone
+- [ ] Sufficient color contrast (4.5:1 or higher)
 
-#### 모바일 접근성
+#### Mobile Accessibility
 
-- [ ] 터치 타겟 크기 적절 (44px 이상)
-- [ ] 터치 제스처 지원
-- [ ] 반응형 디자인
+- [ ] Appropriate touch target size (44px or larger)
+- [ ] Touch gesture support
+- [ ] Responsive design
 
-## 🚨 알려진 이슈
+## 🚨 Known Issues
 
-### 해결된 이슈
+### Resolved Issues
 
-- ✅ 날짜 버튼에 aria-label 추가
-- ✅ 키보드 네비게이션 구현
-- ✅ 스크린 리더 알림 시스템
-- ✅ 포커스 관리 개선
+- ✅ Added aria-label to date buttons
+- ✅ Implemented keyboard navigation
+- ✅ Screen reader announcement system
+- ✅ Improved focus management
 
-### 개선 예정
+### Planned Improvements
 
-- 🔄 음성 제어 지원
-- 🔄 하단 쿼드 지원
-- 🔄 고급 키보드 단축키
+- 🔄 Voice control support
+- 🔄 Quadriplegia support
+- 🔄 Advanced keyboard shortcuts
 
-## 📚 추가 리소스
+## 📚 Additional Resources
 
-### WCAG 2.1 가이드라인
+### WCAG 2.1 Guidelines
 
-- [WCAG 2.1 AA 요구사항](https://www.w3.org/WAI/WCAG21/AA/)
-- [키보드 접근성](https://www.w3.org/WAI/WCAG21/quickref/#keyboard)
-- [스크린 리더 지원](https://www.w3.org/WAI/WCAG21/quickref/#name-role-value)
+- [WCAG 2.1 AA Requirements](https://www.w3.org/WAI/WCAG21/AA/)
+- [Keyboard Accessibility](https://www.w3.org/WAI/WCAG21/quickref/#keyboard)
+- [Screen Reader Support](https://www.w3.org/WAI/WCAG21/quickref/#name-role-value)
 
-### 테스트 도구
+### Testing Tools
 
 - [axe-core](https://github.com/dequelabs/axe-core)
 - [WAVE](https://wave.webaim.org/)
 - [Lighthouse](https://developers.google.com/web/tools/lighthouse)
 
-### 개발 가이드
+### Development Guides
 
-- [ARIA 사용 가이드](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA)
-- [접근성 테스트 방법](https://www.w3.org/WAI/ER/tools/)
+- [ARIA Usage Guide](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA)
+- [Accessibility Testing Methods](https://www.w3.org/WAI/ER/tools/)
 
-## 🤝 기여하기
+## 🤝 Contributing
 
-접근성 개선에 기여하고 싶으시다면:
+If you'd like to contribute to accessibility improvements:
 
-1. 이슈 리포트 작성
-2. 접근성 테스트 실행
-3. 개선 사항 제안
-4. 코드 리뷰 참여
+1. Create an issue report
+2. Run accessibility tests
+3. Suggest improvements
+4. Participate in code reviews
 
-모든 기여는 WCAG 2.1 AA 준수를 목표로 합니다.
+All contributions aim for WCAG 2.1 AA compliance.
 
 ---
 
-**참고**: 이 문서는 지속적으로 업데이트됩니다. 최신 정보는 프로젝트 저장소를 확인해주세요.
+**Note**: This document is continuously updated. Please check the project repository for the latest information.

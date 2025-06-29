@@ -25,13 +25,13 @@ const ButtonBase = styled.button`
     border-radius: 20%;
   }
 
-  /* 모바일에서만 터치 타겟 보장 */
+  /* Ensure touch target on mobile only */
   @media (max-width: 768px) {
     min-width: 44px;
     min-height: 44px;
   }
 
-  /* 데스크탑에서는 min-width/min-height 적용하지 않음 */
+  /* Don't apply min-width/min-height on desktop */
 
   /* High contrast mode support */
   @media (prefers-contrast: high) {
@@ -99,13 +99,13 @@ const StyledTodayButton = styled.div`
     border-radius: 50%;
   }
 
-  /* 모바일에서만 터치 타겟 보장 */
+  /* Ensure touch target on mobile only */
   @media (max-width: 768px) {
     min-width: 44px;
     min-height: 44px;
   }
 
-  /* 데스크탑에서는 min-width/min-height 적용하지 않음 */
+  /* Don't apply min-width/min-height on desktop */
 
   /* High contrast mode support */
   @media (prefers-contrast: high) {
