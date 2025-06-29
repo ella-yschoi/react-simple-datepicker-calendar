@@ -38,29 +38,40 @@ const Calendar: React.FC<CalendarProps> = ({
     setDisplayDate,
   } = useCalendar(value);
 
-  const { prevMonthDays, currentMonthDays, nextMonthDays } = calculateDate(currentDate);
-
-  const displayYearMonth = currentDate.toLocaleDateString(language === 'ko' ? 'ko-KR' : 'en-US', {
-    year: 'numeric',
-    month: 'short'
-  });
+  const { prevMonthDays, currentMonthDays, nextMonthDays } =
+    calculateDate(currentDate);
 
   const daysOfWeek = language === 'ko' ? DAYS_OF_WEEK_KO : DAYS_OF_WEEK_EN;
 
   const handleDateClick = (year: number, month: number, day: number) => {
-    handleDateSelect(year, month, day, setCurrentDate, setDisplayDate, setDateInput);
+    handleDateSelect(
+      year,
+      month,
+      day,
+      setCurrentDate,
+      setDisplayDate,
+      setDateInput
+    );
     onChange(new Date(year, month - 1, day));
   };
+
+  // Convert displayDate string to Date object for SelectedDateDisplay
+  const selectedDate = displayDate
+    ? new Date(displayDate)
+    : value || new Date();
 
   return (
     <>
       <SelectedDateDisplay
-        displayDate={displayDate}
-        $displayBackgroundColor={displayBackgroundColor}
-        $displayFontColor={displayFontColor}
-        language={language}
+        selectedDate={selectedDate}
+        displayBackgroundColor={displayBackgroundColor}
+        displayFontColor={displayFontColor}
       />
-      <CalendarContainer $calendarBackgroundColor={calendarBackgroundColor}>
+      <CalendarContainer
+        $calendarBackgroundColor={calendarBackgroundColor}
+        selectedDate={selectedDate}
+        currentDate={currentDate}
+      >
         <CalendarInput
           dateInput={dateInput}
           onChange={handleDateChange}
@@ -68,7 +79,10 @@ const Calendar: React.FC<CalendarProps> = ({
           $isInputValid={isInputValid}
         />
         <HeaderContainer>
-          <YearMonthDisplay displayYearMonth={displayYearMonth} />
+          <YearMonthDisplay
+            currentDate={currentDate}
+            dayFontColor={dayFontColor}
+          />
           <LeftButton
             currentDate={currentDate}
             setCurrentDate={setCurrentDate}
@@ -79,10 +93,7 @@ const Calendar: React.FC<CalendarProps> = ({
             setCurrentDate={setCurrentDate}
           />
         </HeaderContainer>
-        <DayGrid
-          dayFontColor={dayFontColor}
-          daysOfWeek={daysOfWeek}
-        />
+        <DayGrid dayFontColor={dayFontColor} daysOfWeek={daysOfWeek} />
         <DateGrid
           prevMonthDays={prevMonthDays}
           currentMonthDays={currentMonthDays}
@@ -91,7 +102,7 @@ const Calendar: React.FC<CalendarProps> = ({
           isSelected={isSelected}
           handleDateSelect={handleDateClick}
           currentDate={currentDate}
-          selectedDate={new Date(displayDate)}
+          selectedDate={selectedDate}
           currentDateFontColor={currentDateFontColor}
           prevNextDateFontColor={prevNextDateFontColor}
         />
