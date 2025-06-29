@@ -1,0 +1,429 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Component Patterns & Examples
+
+## 🎯 Component Architecture Patterns
+
+### **Container Component Pattern:**
+Reference: [src/components/containers/CalendarContainer.tsx](mdc:src/components/containers/CalendarContainer.tsx)
+
+```typescript
+// ✅ CORRECT - Container with styled props
+import { StyledCalendarContainer } from '../../styles/Containers.style';
+
+type CalendarContainerProps = {
+  $calendarBackgroundColor?: string;
+  children: React.ReactNode;
+};
+
+const CalendarContainer: React.FC<CalendarContainerProps> = ({
+  $calendarBackgroundColor,
+  children
+}) => {
+  return (
+    <StyledCalendarContainer $calendarBackgroundColor={$calendarBackgroundColor}>
+      {children}
+    </StyledCalendarContainer>
+  );
+};
+```
+
+### **Unit Component Pattern:**
+Reference: [src/components/units/DateUnit.tsx](mdc:src/components/units/DateUnit.tsx)
+
+```typescript
+// ✅ CORRECT - Atomic unit with conditional styling
+interface DateUnitProps {
+  className?: string;
+  onClick: () => void;
+  date: number;
+  $currentDateFontColor?: string;
+  $prevNextDateFontColor?: string;
+}
+
+const DateUnit: React.FC<DateUnitProps> = ({
+  className,
+  onClick,
+  date,
+  $currentDateFontColor,
+  $prevNextDateFontColor
+}) => (
+  <StyledDateUnit 
+    className={className} 
+    onClick={onClick} 
+    $currentDateFontColor={$currentDateFontColor}
+    $prevNextDateFontColor={$prevNextDateFontColor}
+  >
+    {date}
+  </StyledDateUnit>
+);
+```
+
+### **Button Component Pattern:**
+Reference: [src/components/buttons/Buttons.tsx](mdc:src/components/buttons/Buttons.tsx)
+
+```typescript
+// ✅ CORRECT - Button with action handlers
+type ButtonProps = {
+  setCurrentDate: (date: Date) => void;
+  currentDate?: Date;
+};
+
+const ActionButton: React.FC<ButtonProps> = ({ setCurrentDate, currentDate }) => {
+  const handleAction = useCallback(() => {
+    if (currentDate) {
+      // Action logic here
+      setCurrentDate(newDate);
+    }
+  }, [currentDate, setCurrentDate]);
+
+  return <StyledButton onClick={handleAction} />;
+};
+```
+
+## 🎨 Styled Component Patterns
+
+### **Base Component Pattern:**
+Reference: [src/styles/Buttons.style.tsx](mdc:src/styles/Buttons.style.tsx)
+
+```typescript
+// ✅ CORRECT - Base component with inheritance
+const ButtonBase = styled.button`
+  border: none;
+  background: none;
+  cursor: pointer;
+  width: 1.475rem;
+  height: 1.875rem;
+  position: relative;
+
+  &:hover {
+    background-color: #313131;
+    border-radius: 20%;
+  }
+`;
+
+const StyledSpecificButton = styled(ButtonBase)`
+  // Specific styling
+  margin: 0px 5px 0px 95px;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    background-color: #6e6e6e;
+    // Additional pseudo-element styling
+  }
+`;
+```
+
+### **Conditional Styling Pattern:**
+Reference: [src/styles/Units.style.tsx](mdc:src/styles/Units.style.tsx)
+
+```typescript
+// ✅ CORRECT - Conditional classes and states
+const StyledDateUnit = styled.div<DateProps>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+  width: 15px;
+  height: 15px;
+  font-size: 14px;
+  color: ${props => props.$currentDateFontColor || '#d5d5d5'};
+  border: 1px solid transparent;
+
+  &:hover {
+    cursor: pointer;
+    background-color: transparent;
+    border: 1px solid #2383e2;
+    border-radius: 20%;
+  }
+
+  &.today {
+    color: #eff5fd;
+    background-color: #eb5756;
+    border-radius: 50%;
+    font-weight: 600;
+  }
+
+  &.selected {
+    color: #eff5fd;
+    background-color: #2383e2;
+    border-radius: 20%;
+  }
+`;
+```
+
+## 🔧 Hook Patterns
+
+### **State Management Hook:**
+Reference: [src/hooks/useCalendar.ts](mdc:src/hooks/useCalendar.ts)
+
+```typescript
+// ✅ CORRECT - Custom hook with multiple state management
+const useCalendarState = (initialDate: Date) => {
+  const [dateInput, setDateInput] = useState('');
+  const [displayDate, setDisplayDate] = useState('');
+  const [isInputValid, setIsInputValid] = useState(true);
+  const [currentDate, setCurrentDate] = useState(initialDate);
+
+  const handleDateChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+    setDateInput(event.target.value);
+  }, []);
+
+  const validateAndSetDate = useCallback((input: string) => {
+    const dateRegex = /^\d{4}\/\d{1,2}\/\d{1,2}$/;
+    const isValidFormat = dateRegex.test(input);
+
+    if (isValidFormat) {
+      // Validation logic
+      setIsInputValid(true);
+    } else {
+      setIsInputValid(false);
+    }
+  }, []);
+
+  return {
+    dateInput,
+    displayDate,
+    isInputValid,
+    currentDate,
+    handleDateChange,
+    validateAndSetDate,
+    setCurrentDate,
+    setDisplayDate,
+  };
+};
+```
+
+### **Utility Hook Pattern:**
+Reference: [src/hooks/useAppLogic.ts](mdc:src/hooks/useAppLogic.ts)
+
+```typescript
+// ✅ CORRECT - App-level logic hook
+const useAppLogic = () => {
+  const [selectedDate, setSelectedDate] = useState(new Date());
+
+  const handleDateChange = useCallback((newDate: Date) => {
+    setSelectedDate(newDate);
+  }, []);
+
+  return {
+    selectedDate,
+    handleDateChange,
+  };
+};
+```
+
+## 📝 Type Patterns
+
+### **Component Props Interface:**
+Reference: [src/types/index.ts](mdc:src/types/index.ts)
+
+```typescript
+// ✅ CORRECT - Comprehensive props interface
+export interface CalendarProps {
+  // Styling props with $ prefix
+  calendarBackgroundColor?: string;
+  displayBackgroundColor?: string;
+  displayFontColor?: string;
+  dayFontColor?: string;
+  currentDateFontColor?: string;
+  prevNextDateFontColor?: string;
+  
+  // Functional props
+  language?: 'en' | 'ko';
+  value: Date;
+  onChange: (newDate: Date) => void;
+}
+
+// ✅ CORRECT - Specific component props
+export interface DateUnitProps {
+  className?: string;
+  onClick: () => void;
+  date: number;
+  $currentDateFontColor?: string;
+  $prevNextDateFontColor?: string;
+}
+```
+
+## 🎯 Grid Component Patterns
+
+### **Date Grid Pattern:**
+Reference: [src/components/grids/DateGrid.tsx](mdc:src/components/grids/DateGrid.tsx)
+
+```typescript
+// ✅ CORRECT - Grid with conditional rendering
+interface DateGridProps {
+  prevMonthDays: number[];
+  currentMonthDays: number[];
+  nextMonthDays: number[];
+  isToday: (date: Date) => boolean;
+  isSelected: (date: Date) => boolean;
+  handleDateSelect: (year: number, month: number, day: number) => void;
+  currentDate: Date;
+  selectedDate: Date;
+  $currentDateFontColor?: string;
+  $prevNextDateFontColor?: string;
+}
+
+const DateGrid: React.FC<DateGridProps> = ({
+  prevMonthDays,
+  currentMonthDays,
+  nextMonthDays,
+  isToday,
+  isSelected,
+  handleDateSelect,
+  currentDate,
+  selectedDate,
+  $currentDateFontColor,
+  $prevNextDateFontColor,
+}) => {
+  const renderDateUnit = useCallback((day: number, type: 'prev' | 'current' | 'next') => {
+    const date = new Date(currentDate.getFullYear(), currentDate.getMonth(), day);
+    const isTodayDate = isToday(date);
+    const isSelectedDate = isSelected(date);
+    
+    const className = [
+      isTodayDate ? 'today' : '',
+      isSelectedDate ? 'selected' : ''
+    ].filter(Boolean).join(' ');
+
+    return (
+      <DateUnit
+        key={`${type}-${day}`}
+        className={className}
+        date={day}
+        onClick={() => handleDateSelect(date.getFullYear(), date.getMonth() + 1, day)}
+        $currentDateFontColor={$currentDateFontColor}
+        $prevNextDateFontColor={$prevNextDateFontColor}
+      />
+    );
+  }, [currentDate, isToday, isSelected, handleDateSelect, $currentDateFontColor, $prevNextDateFontColor]);
+
+  return (
+    <StyledDateGrid>
+      {prevMonthDays.map(day => renderDateUnit(day, 'prev'))}
+      {currentMonthDays.map(day => renderDateUnit(day, 'current'))}
+      {nextMonthDays.map(day => renderDateUnit(day, 'next'))}
+    </StyledDateGrid>
+  );
+};
+```
+
+## 🚀 Performance Patterns
+
+### **Memoization Pattern:**
+```typescript
+// ✅ CORRECT - Memoized component with stable props
+const MemoizedDateUnit = React.memo<DateUnitProps>(({
+  className,
+  onClick,
+  date,
+  $currentDateFontColor,
+  $prevNextDateFontColor
+}) => {
+  const handleClick = useCallback(() => {
+    onClick();
+  }, [onClick]);
+
+  return (
+    <StyledDateUnit
+      className={className}
+      onClick={handleClick}
+      date={date}
+      $currentDateFontColor={$currentDateFontColor}
+      $prevNextDateFontColor={$prevNextDateFontColor}
+    >
+      {date}
+    </StyledDateUnit>
+  );
+});
+```
+
+### **Event Handler Pattern:**
+```typescript
+// ✅ CORRECT - Stable event handlers
+const CalendarComponent: React.FC<CalendarProps> = ({ onChange, value }) => {
+  const handleDateClick = useCallback((year: number, month: number, day: number) => {
+    const newDate = new Date(year, month - 1, day);
+    onChange(newDate);
+  }, [onChange]);
+
+  const handleKeyDown = useCallback((event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      // Handle enter key logic
+    }
+  }, []);
+
+  return (
+    // Component JSX
+  );
+};
+```
+
+## 🔍 Error Handling Patterns
+
+### **Input Validation Pattern:**
+```typescript
+// ✅ CORRECT - Comprehensive input validation
+const validateDateInput = (input: string): boolean => {
+  const dateRegex = /^\d{4}\/\d{1,2}\/\d{1,2}$/;
+  const isValidFormat = dateRegex.test(input);
+
+  if (!isValidFormat) return false;
+
+  const [yearStr, monthStr, dayStr] = input.split('/');
+  const year = parseInt(yearStr, 10);
+  const month = parseInt(monthStr, 10);
+  const day = parseInt(dayStr, 10);
+
+  const dateObj = new Date(year, month - 1, day);
+  const isValidDate =
+    dateObj.getFullYear() === year &&
+    dateObj.getMonth() === month - 1 &&
+    dateObj.getDate() === day;
+
+  return isValidDate;
+};
+```
+
+## 📚 Documentation Patterns
+
+### **JSDoc Pattern:**
+```typescript
+/**
+ * Calendar component for date selection with customizable styling
+ * 
+ * @param {string} [calendarBackgroundColor] - Background color of the entire calendar component
+ * @param {string} [displayBackgroundColor] - Background color for the display area
+ * @param {string} [displayFontColor] - Font color for the display area
+ * @param {string} [dayFontColor] - Font color for the day names
+ * @param {string} [currentDateFontColor] - Font color for the current date
+ * @param {string} [prevNextDateFontColor] - Font color for previous/next month dates
+ * @param {'en'|'ko'} [language] - Language settings for the calendar
+ * @param {Date} value - The currently selected date
+ * @param {function} onChange - Function to call when the date is changed
+ * 
+ * @example
+ * ```tsx
+ * <Calendar
+ *   value={selectedDate}
+ *   onChange={handleDateChange}
+ *   language="ko"
+ *   calendarBackgroundColor="#333"
+ * />
+ * ```
+ */
+```
+
+---
+
+**Key Takeaways:**
+- **ALWAYS** use the established patterns for consistency
+- **NEVER** deviate from the component structure
+- **ALWAYS** follow the naming conventions
+- **ALWAYS** implement proper TypeScript types
+- **ALWAYS** use styled-components with $ prefix props

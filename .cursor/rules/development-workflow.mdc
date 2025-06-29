@@ -1,0 +1,279 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Development Workflow & Quality Assurance
+
+## 🚀 Development Process
+
+### **Before Starting Development:**
+1. **ALWAYS** check existing components in [src/components/](mdc:src/components)
+2. **ALWAYS** review similar patterns in [src/styles/](mdc:src/styles)
+3. **ALWAYS** check type definitions in [src/types/index.ts](mdc:src/types/index.ts)
+4. **ALWAYS** understand the hook patterns in [src/hooks/](mdc:src/hooks)
+
+### **Component Creation Workflow:**
+```bash
+# 1. Create TypeScript interface first
+# 2. Create styled component file
+# 3. Create component file
+# 4. Add to index.ts if needed
+# 5. Test and document
+```
+
+## 🔍 Code Review Checklist
+
+### **TypeScript Compliance:**
+- [ ] **NO** `any` types used
+- [ ] **ALL** props have proper interfaces
+- [ ] **ALL** functions have return types
+- [ ] **ALL** event handlers are properly typed
+- [ ] **ALL** styled-component props use `$` prefix
+
+### **Component Structure:**
+- [ ] **Component** is under 50 lines
+- [ ] **Styled component** is under 30 lines
+- [ ] **Business logic** is in custom hooks
+- [ ] **Props** have default values where appropriate
+- [ ] **JSDoc** comments for public APIs
+
+### **Styling Compliance:**
+- [ ] **NO** inline styles
+- [ ] **NO** CSS classes (use styled-components)
+- [ ] **ALL** colors use the design system
+- [ ] **ALL** spacing follows the scale
+- [ ] **ALL** styled props use `$` prefix
+
+### **Performance Checks:**
+- [ ] **React.memo()** for components with stable props
+- [ ] **useCallback()** for event handlers
+- [ ] **useMemo()** for expensive calculations
+- [ ] **NO** object/function creation in render
+
+## 🧪 Testing Strategy
+
+### **Component Testing Checklist:**
+```typescript
+// ✅ CORRECT - Test all prop combinations
+describe('Calendar Component', () => {
+  it('should render with default props', () => {
+    // Test default rendering
+  });
+
+  it('should handle custom styling props', () => {
+    // Test custom colors, fonts, etc.
+  });
+
+  it('should handle date selection', () => {
+    // Test onChange callback
+  });
+
+  it('should handle language switching', () => {
+    // Test 'en' and 'ko' languages
+  });
+
+  it('should handle keyboard navigation', () => {
+    // Test Enter key, arrow keys
+  });
+});
+```
+
+### **Accessibility Testing:**
+- [ ] **Keyboard navigation** works properly
+- [ ] **Screen reader** compatibility
+- [ ] **Focus management** is correct
+- [ ] **ARIA labels** are present
+- [ ] **Color contrast** meets WCAG standards
+
+## 📦 Build & Deployment
+
+### **Pre-commit Checks:**
+```bash
+# 1. TypeScript compilation
+npm run build
+
+# 2. Linting
+npm run lint
+
+# 3. Test execution
+npm test
+
+# 4. Bundle size check
+npm run build && npm run preview
+```
+
+### **Bundle Analysis:**
+- **Target size**: Under 50KB gzipped
+- **No unused dependencies**
+- **Tree shaking** working properly
+- **Code splitting** if needed
+
+## 🔧 Development Tools
+
+### **VS Code Extensions Required:**
+- **ESLint** - Code quality
+- **Prettier** - Code formatting
+- **TypeScript** - Type checking
+- **Styled Components** - CSS-in-JS support
+
+### **Recommended Settings:**
+```json
+{
+  "typescript.preferences.importModuleSpecifier": "relative",
+  "typescript.suggest.autoImports": true,
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  }
+}
+```
+
+## 🚨 Common Issues & Solutions
+
+### **Issue: Styled Component Props Not Working**
+```typescript
+// ❌ WRONG - Missing $ prefix
+const StyledComponent = styled.div<{ backgroundColor: string }>`
+  background-color: ${props => props.backgroundColor};
+`;
+
+// ✅ CORRECT - With $ prefix
+const StyledComponent = styled.div<{ $backgroundColor: string }>`
+  background-color: ${props => props.$backgroundColor};
+`;
+```
+
+### **Issue: TypeScript Errors with Event Handlers**
+```typescript
+// ❌ WRONG - Incorrect event type
+const handleChange = (event: any) => {
+  setValue(event.target.value);
+};
+
+// ✅ CORRECT - Proper event typing
+const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  setValue(event.target.value);
+};
+```
+
+### **Issue: Component Too Large**
+```typescript
+// ❌ WRONG - Large component
+const LargeComponent = () => {
+  // 100+ lines of code
+  return <div>...</div>;
+};
+
+// ✅ CORRECT - Break into smaller components
+const SmallComponent = () => {
+  return <div>...</div>;
+};
+
+const AnotherSmallComponent = () => {
+  return <div>...</div>;
+};
+```
+
+## 📚 Documentation Standards
+
+### **README Requirements:**
+- [ ] **Installation** instructions
+- [ ] **Usage** examples
+- [ ] **Props** documentation
+- [ ] **Styling** guide
+- [ ] **Accessibility** notes
+- [ ] **Browser support**
+
+### **Code Documentation:**
+```typescript
+/**
+ * Calendar component for date selection
+ * 
+ * @example
+ * ```tsx
+ * import Calendar from 'react-simple-datepicker-calendar';
+ * 
+ * function App() {
+ *   const [date, setDate] = useState(new Date());
+ *   
+ *   return (
+ *     <Calendar
+ *       value={date}
+ *       onChange={setDate}
+ *       language="ko"
+ *       calendarBackgroundColor="#333"
+ *     />
+ *   );
+ * }
+ * ```
+ */
+```
+
+## 🎯 Performance Monitoring
+
+### **Bundle Size Tracking:**
+```bash
+# Check bundle size
+npm run build
+npm run preview
+
+# Analyze bundle
+npx vite-bundle-analyzer
+```
+
+### **Runtime Performance:**
+- **Component render time** < 16ms
+- **Memory usage** stable
+- **No memory leaks**
+- **Smooth animations** (60fps)
+
+## 🔄 Version Management
+
+### **Semantic Versioning:**
+- **Patch** (0.1.x): Bug fixes
+- **Minor** (0.x.1): New features, backward compatible
+- **Major** (x.0.0): Breaking changes
+
+### **Changelog Requirements:**
+```markdown
+## [0.1.11] - 2024-01-01
+
+### Added
+- New prop for custom date formatting
+
+### Changed
+- Improved accessibility for screen readers
+
+### Fixed
+- Date selection bug in edge cases
+```
+
+## 🚨 Emergency Procedures
+
+### **If Build Fails:**
+1. **Check TypeScript errors** first
+2. **Run linting** to find issues
+3. **Check dependencies** for conflicts
+4. **Review recent changes** for breaking changes
+
+### **If Tests Fail:**
+1. **Check component props** for type mismatches
+2. **Verify event handlers** are properly typed
+3. **Check styled-components** for prop issues
+4. **Review test setup** and mocks
+
+### **If Performance Degrades:**
+1. **Profile component renders**
+2. **Check for unnecessary re-renders**
+3. **Verify memoization** is working
+4. **Check bundle size** for bloat
+
+---
+
+**Remember**: Quality is non-negotiable. Every component must be:
+- **Type-safe** with proper TypeScript
+- **Well-documented** with JSDoc
+- **Accessible** for all users
+- **Performant** and optimized
+- **Testable** with clear interfaces
