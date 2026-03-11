@@ -7,14 +7,15 @@ import {
 type ButtonProps = {
   setCurrentDate: (date: Date) => void;
   currentDate?: Date;
+  onMonthChange?: (date: Date) => void;
 };
 
-const LeftButton: React.FC<ButtonProps> = ({ setCurrentDate, currentDate }) => {
+const LeftButton: React.FC<ButtonProps> = ({ setCurrentDate, currentDate, onMonthChange }) => {
   const handlePreviousMonth = () => {
     const safeCurrentDate = currentDate || new Date();
-    setCurrentDate(
-      new Date(safeCurrentDate.getFullYear(), safeCurrentDate.getMonth() - 1, 1)
-    );
+    const newDate = new Date(safeCurrentDate.getFullYear(), safeCurrentDate.getMonth() - 1, 1);
+    setCurrentDate(newDate);
+    onMonthChange?.(newDate);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -50,9 +51,11 @@ const LeftButton: React.FC<ButtonProps> = ({ setCurrentDate, currentDate }) => {
   );
 };
 
-const TodayButton: React.FC<ButtonProps> = ({ setCurrentDate }) => {
+const TodayButton: React.FC<ButtonProps> = ({ setCurrentDate, onMonthChange }) => {
   const handleToday = () => {
-    setCurrentDate(new Date());
+    const now = new Date();
+    setCurrentDate(now);
+    onMonthChange?.(now);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -85,12 +88,13 @@ const TodayButton: React.FC<ButtonProps> = ({ setCurrentDate }) => {
 const RightButton: React.FC<ButtonProps> = ({
   setCurrentDate,
   currentDate,
+  onMonthChange,
 }) => {
   const handleNextMonth = () => {
     const safeCurrentDate = currentDate || new Date();
-    setCurrentDate(
-      new Date(safeCurrentDate.getFullYear(), safeCurrentDate.getMonth() + 1, 1)
-    );
+    const newDate = new Date(safeCurrentDate.getFullYear(), safeCurrentDate.getMonth() + 1, 1);
+    setCurrentDate(newDate);
+    onMonthChange?.(newDate);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {

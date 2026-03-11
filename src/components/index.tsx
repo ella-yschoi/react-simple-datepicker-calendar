@@ -25,6 +25,9 @@ const Calendar: React.FC<CalendarProps> = ({
   language = 'en',
   value,
   onChange,
+  className,
+  style,
+  onMonthChange,
 }) => {
   const {
     dateInput,
@@ -62,7 +65,7 @@ const Calendar: React.FC<CalendarProps> = ({
     : value || new Date();
 
   return (
-    <>
+    <div className={className} style={style}>
       <SelectedDateDisplay
         selectedDate={selectedDate}
         displayBackgroundColor={displayBackgroundColor}
@@ -88,11 +91,16 @@ const Calendar: React.FC<CalendarProps> = ({
           <LeftButton
             currentDate={currentDate}
             setCurrentDate={setCurrentDate}
+            onMonthChange={onMonthChange}
           />
-          <TodayButton setCurrentDate={setCurrentDate} />
+          <TodayButton
+            setCurrentDate={setCurrentDate}
+            onMonthChange={onMonthChange}
+          />
           <RightButton
             currentDate={currentDate}
             setCurrentDate={setCurrentDate}
+            onMonthChange={onMonthChange}
           />
         </HeaderContainer>
         <DayGrid dayFontColor={dayFontColor} daysOfWeek={daysOfWeek} />
@@ -109,7 +117,7 @@ const Calendar: React.FC<CalendarProps> = ({
           prevNextDateFontColor={prevNextDateFontColor}
         />
       </CalendarContainer>
-    </>
+    </div>
   );
 };
 

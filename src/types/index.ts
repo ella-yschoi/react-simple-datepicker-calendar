@@ -8,4 +8,7 @@ export interface CalendarProps {
   language?: 'en'|'ko';
   value: Date;
   onChange: (newDate: Date) => void;
+  className?: string;
+  style?: React.CSSProperties;
+  onMonthChange?: (date: Date) => void;
 }
