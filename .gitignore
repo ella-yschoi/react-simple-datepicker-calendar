@@ -25,3 +25,7 @@ dist-ssr
 
 # Cursor rules
 .cursor/rules/
+
+# Project-local agent config
+CLAUDE.md
+convention.md
