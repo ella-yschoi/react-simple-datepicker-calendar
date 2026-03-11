@@ -11,8 +11,8 @@ type YearMonthDisplayProps = {
 
 const StyledSelectedDateDisplay = styled.div<SelectedDateDisplayProps>`
   margin: 20px;
-  padding: 25px 25px 25px 28px;
-  width: 247px;
+  padding: 25px;
+  width: 250px;
   height: 10px;
   background-color: ${(props) => props.$displayBackgroundColor || '#252525'};
   font-size: 14px;
