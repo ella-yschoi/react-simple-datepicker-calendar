@@ -36,7 +36,7 @@ const Calendar: React.FC<CalendarProps> = ({
     handleKeyDown,
     setCurrentDate,
     setDisplayDate,
-  } = useCalendar(value);
+  } = useCalendar(value, onChange);
 
   const { prevMonthDays, currentMonthDays, nextMonthDays } =
     calculateDate(currentDate);

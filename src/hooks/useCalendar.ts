@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-const useCalendar = (initialDate: Date) => {
+const useCalendar = (initialDate: Date, onChange?: (newDate: Date) => void) => {
   const [dateInput, setDateInput] = useState('');
   const [displayDate, setDisplayDate] = useState('');
   const [isInputValid, setIsInputValid] = useState(true);
@@ -34,6 +34,7 @@ const useCalendar = (initialDate: Date) => {
           setDateInput(formattedDate);
           setIsInputValid(true);
           setCurrentDate(dateObj);
+          onChange?.(dateObj);
         } else setIsInputValid(false);
       } else setIsInputValid(false);
     }
