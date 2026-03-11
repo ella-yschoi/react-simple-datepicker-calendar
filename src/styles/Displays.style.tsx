@@ -17,7 +17,7 @@ const StyledSelectedDateDisplay = styled.div<SelectedDateDisplayProps>`
   background-color: ${(props) => props.$displayBackgroundColor || '#252525'};
   font-size: 14px;
   color: ${(props) => props.$displayFontColor || '#c5c5c5'};
-  font-family: 'Noto Sans KR';
+  font-family: inherit, 'Noto Sans KR', sans-serif;
   border-radius: 10px;
   border: 0.5px solid #252525;
 `;

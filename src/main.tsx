@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
+import GlobalStyles from './styles/GlobalStyles';
 import { CalendarProps } from './types';
 
 const calendarProps: CalendarProps = {
@@ -17,6 +18,7 @@ const calendarProps: CalendarProps = {
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
+    <GlobalStyles />
     <App {...calendarProps} />
   </React.StrictMode>
 );
