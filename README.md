@@ -81,6 +81,13 @@ function App() {
 export default App;
 ```
 
+You can also import the `useCalendar` hook and `CalendarProps` type for advanced usage:
+
+```tsx
+import { useCalendar } from 'react-simple-datepicker-calendar';
+import type { CalendarProps } from 'react-simple-datepicker-calendar';
+```
+
 <br/>
 
 ## Props
@@ -95,13 +102,37 @@ export default App;
 | prevNextDateFontColor   | string                  | Font color for the dates of the previous and next month.                          | '#899797' |
 | language                | 'en'\|'ko'              | Supported values are 'en' for English and 'ko' for Korean.                        | 'en'      |
 | value                   | Date                    | The currently selected date.                                                      |           |
-| onChange                | (newDate: Date) => void | Language settings for the calendar. Function to call when the date is changed.    |           |
+| onChange                | (newDate: Date) => void | Function to call when the date is changed.                                        |           |
+| className               | string                  | Custom CSS class name for the calendar root element.                              |           |
+| style                   | React.CSSProperties     | Inline styles for the calendar root element.                                      |           |
+| onMonthChange           | (date: Date) => void    | Callback fired when the displayed month changes.                                  |           |
 
 <br/>
 
 ## Version History
 
-### **v0.1.11** (Latest)
+### **v0.2.1** (Latest)
+
+- 🔧 **Chore**
+  - Normalize repository URL in package.json
+
+### **v0.2.0**
+
+- ✨ **New Features**
+  - `className`, `style`, and `onMonthChange` props
+  - Export `useCalendar` hook and `CalendarProps` type
+  - Error message for invalid date input
+- 🔧 **Bug Fixes**
+  - Fix `onChange` not firing on keyboard date input
+  - Fix date selection boundary comparison across months
+  - Fix consumer state override in App export
+  - Align display and calendar container widths
+  - Prevent year-month display from wrapping to two lines
+  - Use min-height so error message does not shrink bottom padding
+- 🏗️ **Improvements**
+  - Remove global styles from library output
+
+### **v0.1.11**
 
 - ✨ **Major Accessibility Improvements**
   - WCAG 2.1 AA compliance
