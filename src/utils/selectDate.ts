@@ -13,11 +13,15 @@ const isSelected = (
   currentDate: Date,
   selectedDate: Date
 ) => {
-  const adjustedMonth = currentDate.getMonth() + monthOffset;
+  const adjusted = new Date(
+    currentDate.getFullYear(),
+    currentDate.getMonth() + monthOffset,
+    date
+  );
   return (
-    date === selectedDate.getDate() &&
-    adjustedMonth === selectedDate.getMonth() &&
-    currentDate.getFullYear() === selectedDate.getFullYear()
+    adjusted.getDate() === selectedDate.getDate() &&
+    adjusted.getMonth() === selectedDate.getMonth() &&
+    adjusted.getFullYear() === selectedDate.getFullYear()
   );
 };
 
