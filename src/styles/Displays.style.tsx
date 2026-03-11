@@ -27,6 +27,7 @@ const StyledYearMonthDisplay = styled.div<YearMonthDisplayProps>`
   margin-left: 5px;
   color: ${(props) => props.$dayFontColor || '#c5c5c5'};
   font-size: 15px;
+  white-space: nowrap;
 `;
 
 export { StyledSelectedDateDisplay, StyledYearMonthDisplay };
