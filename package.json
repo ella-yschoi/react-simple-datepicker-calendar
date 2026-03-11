@@ -15,7 +15,7 @@
   "homepage": "https://github.com/ella-yschoi/react-simple-datepicker-calendar#readme",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ella-yschoi/react-simple-datepicker-calendar.git"
+    "url": "git+https://github.com/ella-yschoi/react-simple-datepicker-calendar.git"
   },
   "bugs": {
     "url": "https://github.com/ella-yschoi/react-simple-datepicker-calendar/issues"
