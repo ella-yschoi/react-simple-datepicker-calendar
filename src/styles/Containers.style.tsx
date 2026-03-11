@@ -9,7 +9,7 @@ const StyledCalendarContainer = styled.div<CalendarContainerProps>`
   margin: 20px;
   padding: 25px;
   width: 250px;
-  height: 323px;
+  min-height: 323px;
   max-width: 300px;
   font-family: inherit, 'Noto Sans KR', sans-serif;
   border-radius: 10px;
