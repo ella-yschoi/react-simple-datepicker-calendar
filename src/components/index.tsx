@@ -31,6 +31,7 @@ const Calendar: React.FC<CalendarProps> = ({
     setDateInput,
     displayDate,
     isInputValid,
+    errorMessage,
     currentDate,
     handleDateChange,
     handleKeyDown,
@@ -77,6 +78,7 @@ const Calendar: React.FC<CalendarProps> = ({
           onChange={handleDateChange}
           onKeyDown={handleKeyDown}
           $isInputValid={isInputValid}
+          errorMessage={errorMessage}
         />
         <HeaderContainer>
           <YearMonthDisplay

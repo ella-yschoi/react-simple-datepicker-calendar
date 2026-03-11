@@ -4,13 +4,26 @@ const useCalendar = (initialDate: Date, onChange?: (newDate: Date) => void) => {
   const [dateInput, setDateInput] = useState('');
   const [displayDate, setDisplayDate] = useState('');
   const [isInputValid, setIsInputValid] = useState(true);
+  const [errorMessage, setErrorMessage] = useState('');
   const [currentDate, setCurrentDate] = useState(initialDate);
 
   const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setDateInput(event.target.value);
+    if (!isInputValid) {
+      setIsInputValid(true);
+      setErrorMessage('');
+    }
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Escape') {
+      setDateInput('');
+      setIsInputValid(true);
+      setErrorMessage('');
+      (event.target as HTMLInputElement).blur();
+      return;
+    }
+
     if (event.key === 'Enter') {
       const dateRegex = /^\d{4}\/\d{1,2}\/\d{1,2}$/;
       const isValidFormat = dateRegex.test(dateInput);
@@ -33,10 +46,17 @@ const useCalendar = (initialDate: Date, onChange?: (newDate: Date) => void) => {
           setDisplayDate(formattedDate);
           setDateInput(formattedDate);
           setIsInputValid(true);
+          setErrorMessage('');
           setCurrentDate(dateObj);
           onChange?.(dateObj);
-        } else setIsInputValid(false);
-      } else setIsInputValid(false);
+        } else {
+          setIsInputValid(false);
+          setErrorMessage('Invalid date. Please enter a real date.');
+        }
+      } else {
+        setIsInputValid(false);
+        setErrorMessage('Use format YYYY/MM/DD.');
+      }
     }
   };
 
@@ -44,6 +64,7 @@ const useCalendar = (initialDate: Date, onChange?: (newDate: Date) => void) => {
     dateInput,
     displayDate,
     isInputValid,
+    errorMessage,
     currentDate,
     handleDateChange,
     handleKeyDown,
